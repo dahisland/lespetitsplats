@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Les petits plats</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="./img/favicon.png" />
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <!-- SCRIPT FONT AWESOME -->
+    <script
+      src="https://kit.fontawesome.com/e2e7cc2238.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- CSS links -->
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <!-- ****************************************************************** -->
+    <!--                               HEADER                               -->
+    <!-- ****************************************************************** -->
+    <header>
+      <img src="./img/logo.png" alt="logo" />
+      <h1>Les petits plats</h1>
+    </header>
+    <!-- ****************************************************************** -->
+    <!--                             SEARCH NAV                             -->
+    <!-- ****************************************************************** -->
+    <nav>
+      <form>
+        <!-- Search bar -->
+        <fieldset class="nav_searchBar">
+          <input
+            class="searchBar_input"
+            type="search"
+            placeholder="Rechercher une recette"
+          />
+          <button><span class="fas fa-search icons"></span></button>
+        </fieldset>
+        <!-- Tags selected -->
+        <ul class="nav_selectedTags"></ul>
+        <!-- Tags filters -->
+        <fieldset class="nav_searchTags">
+          <div
+            class="searchTags_filter"
+            id="filter-ingredients"
+            data-state="closed"
+          >
+            <input
+              type="search"
+              class="searchTags_input"
+              placeholder="Rechercher un ingrédient"
+              value="Ingrédients"
+            />
+            <button class="searchTags_btnDown">
+              <span class="fas fa-chevron-down icons"></span>
+            </button>
+            <button class="searchTags_btnUp">
+              <span class="fas fa-chevron-up icons"></span>
+            </button>
+            <ul class="searchTags_tagsList"></ul>
+          </div>
+          <div
+            class="searchTags_filter"
+            id="filter-devices"
+            data-state="closed"
+          >
+            <input
+              type="search"
+              class="searchTags_input"
+              placeholder="Rechercher un appareil"
+              value="Appareils"
+            />
+            <button class="searchTags_btnDown">
+              <span class="fas fa-chevron-down icons"></span>
+            </button>
+            <button class="searchTags_btnUp">
+              <span class="fas fa-chevron-up icons"></span>
+            </button>
+            <ul class="searchTags_tagsList"></ul>
+          </div>
+          <div
+            class="searchTags_filter"
+            id="filter-utensils"
+            data-state="closed"
+          >
+            <input
+              type="search"
+              class="searchTags_input"
+              placeholder="Rechercher un ustensile"
+              value="Ustensiles"
+            />
+            <button class="searchTags_btnDown">
+              <span class="fas fa-chevron-down icons"></span>
+            </button>
+            <button class="searchTags_btnUp">
+              <span class="fas fa-chevron-up icons"></span>
+            </button>
+            <ul class="searchTags_tagsList"></ul>
+          </div>
+        </fieldset>
+      </form>
+    </nav>
+    <!-- ****************************************************************** -->
+    <!--                                MAIN                                -->
+    <!-- ****************************************************************** -->
+    <main>
+      <ul class="main_recipesList"></ul>
+    </main>
+    <!-- ****************************************************************** -->
+    <!--                               SCRIPTS                              -->
+    <!-- ****************************************************************** -->
+    <script src="./js/index.js"></script>
+  </body>
+</html>

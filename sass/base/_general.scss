@@ -1,0 +1,34 @@
+@use "../utils" as utils;
+
+* {
+  box-sizing: border-box;
+}
+html {
+  font-family: utils.$lato;
+  font-size: 18px;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+body {
+  margin: 0 auto;
+  padding: 0 3.5rem;
+  background: map-get(utils.$colors, snow);
+}
+
+span.icons {
+  font-family: utils.$awesome;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.filter--opened {
+  width: 47%;
+}
+.filter--closed {
+  width: fit-content;
+}

@@ -1,0 +1,16 @@
+@use "../utils" as utils;
+
+main {
+  ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    li {
+      display: block;
+      width: 30%;
+      margin-bottom: 1rem;
+    }
+  }
+}

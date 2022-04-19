@@ -1,0 +1,62 @@
+@use "../utils" as utils;
+
+fieldset.nav_searchTags {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  .searchTags_filter {
+    position: relative;
+    @include utils.borders;
+    min-width: 14%;
+    width: fit-content;
+    max-width: 47%;
+    height: fit-content;
+    margin-right: 1%;
+    input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      @include utils.borders;
+      color: map-get(utils.$colors, snow);
+    }
+    &:nth-child(1) {
+      background: map-get(utils.$colors, sea);
+      input {
+        background: map-get(utils.$colors, sea);
+      }
+    }
+    &:nth-child(2) {
+      background: map-get(utils.$colors, grass);
+      input {
+        background: map-get(utils.$colors, grass);
+      }
+    }
+    &:nth-child(3) {
+      background: map-get(utils.$colors, tomato);
+      input {
+        background: map-get(utils.$colors, tomato);
+      }
+    }
+    button {
+      color: map-get(utils.$colors, snow);
+      font-size: 1rem;
+    }
+    button.searchTags_btnUp {
+      display: none;
+    }
+  }
+  ul.searchTags_tagsList {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 65px;
+    padding-bottom: 0.6rem;
+    width: 100%;
+    li {
+      width: 32%;
+      color: map-get(utils.$colors, snow);
+      padding: 0.2rem 0.9rem;
+    }
+  }
+}
