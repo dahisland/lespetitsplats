@@ -1,16 +1,105 @@
 @use "../utils" as utils;
 
 main {
-  ul {
+  margin-top: 2rem;
+  ul.main_recipesList {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
+    li.recipesList_cards {
+      display: flex;
+      flex-direction: column;
+      width: 31%;
+      height: 460px;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      background: map-get(utils.$colors, lightgrey);
+      @include utils.borders;
+      picture {
+        display: block;
+        overflow: hidden;
+      }
+      img {
+        object-fit: cover;
+        object-position: top;
+        width: 100%;
+        height: 220px;
+      }
+    }
+  }
+}
+
+.li_title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1.3rem 0.9rem;
+  h2 {
+    margin: 0;
+    font-family: utils.$lato;
+    font-size: map-get(utils.$sizes, med);
+    font-weight: map-get(utils.$weights, regular);
+  }
+  aside {
+    font-family: utils.$lato;
+    font-size: map-get(utils.$sizes, med);
+    font-weight: map-get(utils.$weights, boldy);
+  }
+}
+
+.li_recipe {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 0.9rem;
+  .recipe_ingredients {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 48%;
     li {
-      display: block;
-      width: 30%;
-      margin-bottom: 1rem;
+      width: 100%;
+      height: fit-content;
+      margin: 0;
+      padding: 0;
+      font-family: utils.$lato;
+      font-size: map-get(utils.$sizes, xs);
+      font-weight: map-get(utils.$weights, regular);
+      span {
+        font-weight: map-get(utils.$weights, boldy);
+      }
+    }
+  }
+  .recipe_description {
+    width: 48%;
+    margin: 0;
+    position: relative;
+    line-height: 1rem;
+    max-height: 9rem;
+    overflow: hidden;
+    padding-right: 1rem;
+    font-family: utils.$roboto;
+    font-size: map-get(utils.$sizes, xs);
+    font-weight: map-get(utils.$weights, regular);
+    &:before {
+      content: "...";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      background: map-get(utils.$colors, lightgrey);
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      right: 0;
+      width: 1rem;
+      height: 1rem;
+      background: map-get(utils.$colors, lightgrey);
     }
   }
 }

@@ -50,59 +50,47 @@
         <ul class="nav_selectedTags"></ul>
         <!-- Tags filters -->
         <fieldset class="nav_searchTags">
-          <div
-            class="searchTags_filter"
-            id="filter-ingredients"
-            data-state="closed"
-          >
+          <div class="searchTags_filter" data-name="Ingrédients">
             <input
               type="search"
               class="searchTags_input"
               placeholder="Rechercher un ingrédient"
               value="Ingrédients"
             />
-            <button class="searchTags_btnDown">
+            <button class="searchTags_btnDown" data-name="Ingrédients">
               <span class="fas fa-chevron-down icons"></span>
             </button>
-            <button class="searchTags_btnUp">
+            <button class="searchTags_btnUp" data-name="Ingrédients">
               <span class="fas fa-chevron-up icons"></span>
             </button>
             <ul class="searchTags_tagsList"></ul>
           </div>
-          <div
-            class="searchTags_filter"
-            id="filter-devices"
-            data-state="closed"
-          >
+          <div class="searchTags_filter" data-name="Appareils">
             <input
               type="search"
               class="searchTags_input"
               placeholder="Rechercher un appareil"
               value="Appareils"
             />
-            <button class="searchTags_btnDown">
+            <button class="searchTags_btnDown" data-name="Appareils">
               <span class="fas fa-chevron-down icons"></span>
             </button>
-            <button class="searchTags_btnUp">
+            <button class="searchTags_btnUp" data-name="Appareils">
               <span class="fas fa-chevron-up icons"></span>
             </button>
             <ul class="searchTags_tagsList"></ul>
           </div>
-          <div
-            class="searchTags_filter"
-            id="filter-utensils"
-            data-state="closed"
-          >
+          <div class="searchTags_filter" data-name="Ustensiles">
             <input
               type="search"
               class="searchTags_input"
               placeholder="Rechercher un ustensile"
               value="Ustensiles"
             />
-            <button class="searchTags_btnDown">
+            <button class="searchTags_btnDown" data-name="Ustensiles">
               <span class="fas fa-chevron-down icons"></span>
             </button>
-            <button class="searchTags_btnUp">
+            <button class="searchTags_btnUp" data-name="Ustensiles">
               <span class="fas fa-chevron-up icons"></span>
             </button>
             <ul class="searchTags_tagsList"></ul>
@@ -119,6 +107,6 @@
     <!-- ****************************************************************** -->
     <!--                               SCRIPTS                              -->
     <!-- ****************************************************************** -->
-    <script src="./js/index.js"></script>
+    <script src="./js/index.js" type="module"></script>
   </body>
 </html>
