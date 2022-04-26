@@ -1,5 +1,9 @@
 const containerRecipes = document.querySelector(".main_recipesList");
 
+// ------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------------- GET CARDS RECIPES //
+// ------------------------------------------------------------------------------------------- //
+
 class recipe {
   constructor(name, time, ingredients, description) {
     this.name = name;
@@ -10,6 +14,7 @@ class recipe {
 
   getCard() {
     const container = document.createElement("li");
+    container.setAttribute("data-visibility", "visible");
     container.classList.add("recipesList_cards");
 
     const picture = document.createElement("picture");

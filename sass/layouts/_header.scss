@@ -1,13 +1,14 @@
 @use "../utils" as utils;
 
+// Container for Header
 header {
   margin: 1.5rem 0;
   text-align: center;
-}
-h1 {
-  margin: 0;
-  font-family: utils.$dm;
-  font-size: map-get(utils.$sizes, xl);
-  font-weight: map-get(utils.$weights, boldy);
-  color: map-get(utils.$colors, redtitle);
+  h1 {
+    margin: 0;
+    font-family: utils.$dm;
+    font-size: map-get(utils.$sizes, xl);
+    font-weight: map-get(utils.$weights, boldy);
+    color: map-get(utils.$colors, redtitle);
+  }
 }

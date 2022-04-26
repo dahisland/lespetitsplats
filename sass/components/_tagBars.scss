@@ -1,62 +1,115 @@
 @use "../utils" as utils;
 
+// Container for tags filters
 fieldset.nav_searchTags {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: row;
+
+  // Tags filters
   .searchTags_filter {
     position: relative;
     @include utils.borders;
-    min-width: 14%;
+    min-width: 260px;
     width: fit-content;
-    max-width: 47%;
     height: fit-content;
     margin-right: 1%;
+
+    // Tags filters input
     input {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
+      height: 54px;
       @include utils.borders;
       color: map-get(utils.$colors, snow);
     }
+
+    // Tags filter Ingredients
     &:nth-child(1) {
       background: map-get(utils.$colors, sea);
-      input {
+      input,
+      ul {
         background: map-get(utils.$colors, sea);
       }
     }
+
+    // Tags filter Appliance
     &:nth-child(2) {
       background: map-get(utils.$colors, grass);
-      input {
+      input,
+      ul {
         background: map-get(utils.$colors, grass);
       }
     }
+
+    // Tags filter Ustensils
     &:nth-child(3) {
       background: map-get(utils.$colors, tomato);
-      input {
+      input,
+      ul {
         background: map-get(utils.$colors, tomato);
       }
     }
+
+    // Buttons with icons arrow up/ arrow down
     button {
       color: map-get(utils.$colors, snow);
       font-size: 1rem;
     }
+
+    // Buttons with icons arrow up
     button.searchTags_btnUp {
       display: none;
     }
   }
+
+  // Container for tags list
   ul.searchTags_tagsList {
     display: none;
+    position: absolute;
+    z-index: 999;
+    box-shadow: 0px 2px 8px map-get(utils.$colors, snow);
+    top: 51px;
+    left: 0px;
+    border-bottom-left-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding-top: 65px;
-    padding-bottom: 0.6rem;
+    padding: 0.9rem;
     width: 100%;
+
+    // Tags list items
     li {
       width: 32%;
       color: map-get(utils.$colors, snow);
-      padding: 0.2rem 0.9rem;
+      padding: 0.2rem 0rem;
+    }
+  }
+}
+
+// Container for active selected tags
+ul.nav_selectedTags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+
+  // Active selected tag item
+  p {
+    display: block;
+    margin: 0;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+    color: map-get(utils.$colors, snow);
+    font-size: map-get(utils.$sizes, xs);
+    padding: 0.4rem;
+    @include utils.borders;
+
+    // Active selected tag icon close
+    span {
+      margin-left: 0.5rem;
+      cursor: pointer;
     }
   }
 }

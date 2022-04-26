@@ -24,20 +24,26 @@
     <!-- CSS links -->
     <link rel="stylesheet" href="./css/style.css" />
   </head>
+
   <body>
     <!-- ****************************************************************** -->
-    <!--                               HEADER                               -->
+    <!-- *********************************************************** HEADER -->
     <!-- ****************************************************************** -->
+
     <header>
       <img src="./img/logo.png" alt="logo" />
       <h1>Les petits plats</h1>
     </header>
+
     <!-- ****************************************************************** -->
-    <!--                             SEARCH NAV                             -->
+    <!-- ******************************************************* SEARCH NAV -->
     <!-- ****************************************************************** -->
+
     <nav>
       <form>
-        <!-- Search bar -->
+        <!-- *************************************************** SEARCH BAR -->
+        <!-- ************************************************************** -->
+
         <fieldset class="nav_searchBar">
           <input
             class="searchBar_input"
@@ -46,67 +52,94 @@
           />
           <button><span class="fas fa-search icons"></span></button>
         </fieldset>
-        <!-- Tags selected -->
+
+        <!-- ******************************************** TAGS SELECTED BAR -->
+        <!-- ************************************************************** -->
+
         <ul class="nav_selectedTags"></ul>
-        <!-- Tags filters -->
+
+        <!-- ************************************************* TAGS FILTERS -->
+        <!-- ************************************************************** -->
+
         <fieldset class="nav_searchTags">
+          <!-- ***************************************** Filter Ingredients -->
+
           <div class="searchTags_filter" data-name="Ingrédients">
+            <!-- Input Ingredients -->
             <input
               type="search"
               class="searchTags_input"
               placeholder="Rechercher un ingrédient"
               value="Ingrédients"
             />
+            <!-- Icons input Ingredients -->
             <button class="searchTags_btnDown" data-name="Ingrédients">
               <span class="fas fa-chevron-down icons"></span>
             </button>
             <button class="searchTags_btnUp" data-name="Ingrédients">
               <span class="fas fa-chevron-up icons"></span>
             </button>
-            <ul class="searchTags_tagsList"></ul>
+            <!-- Tagslist Ingredients -->
+            <ul class="searchTags_tagsList" data-name="Ingrédients"></ul>
           </div>
+
+          <!-- ******************************************* Filter Appliance -->
+
           <div class="searchTags_filter" data-name="Appareils">
+            <!-- Input Appliance -->
             <input
               type="search"
               class="searchTags_input"
               placeholder="Rechercher un appareil"
               value="Appareils"
             />
+            <!-- Icons input Appliance -->
             <button class="searchTags_btnDown" data-name="Appareils">
               <span class="fas fa-chevron-down icons"></span>
             </button>
             <button class="searchTags_btnUp" data-name="Appareils">
               <span class="fas fa-chevron-up icons"></span>
             </button>
-            <ul class="searchTags_tagsList"></ul>
+            <!-- Tagslist Appliance -->
+            <ul class="searchTags_tagsList" data-name="Appareils"></ul>
           </div>
+
+          <!-- ***************************************** Filter Ustensils -->
+
           <div class="searchTags_filter" data-name="Ustensiles">
+            <!-- Input Ustensils -->
             <input
               type="search"
               class="searchTags_input"
               placeholder="Rechercher un ustensile"
               value="Ustensiles"
             />
+            <!-- Icons input Ustensils -->
             <button class="searchTags_btnDown" data-name="Ustensiles">
               <span class="fas fa-chevron-down icons"></span>
             </button>
             <button class="searchTags_btnUp" data-name="Ustensiles">
               <span class="fas fa-chevron-up icons"></span>
             </button>
-            <ul class="searchTags_tagsList"></ul>
+            <!-- Tagslist Ustensils -->
+            <ul class="searchTags_tagsList" data-name="Ustensiles"></ul>
           </div>
         </fieldset>
       </form>
     </nav>
+
     <!-- ****************************************************************** -->
-    <!--                                MAIN                                -->
+    <!-- ************************************************************* MAIN -->
     <!-- ****************************************************************** -->
+
     <main>
       <ul class="main_recipesList"></ul>
     </main>
+
     <!-- ****************************************************************** -->
-    <!--                               SCRIPTS                              -->
+    <!-- ********************************************************** SCRIPTS -->
     <!-- ****************************************************************** -->
+
     <script src="./js/index.js" type="module"></script>
   </body>
 </html>

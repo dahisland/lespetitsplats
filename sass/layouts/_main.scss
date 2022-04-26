@@ -2,12 +2,16 @@
 
 main {
   margin-top: 2rem;
+
+  // container for recipes li cards
   ul.main_recipesList {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
+
+    // li cards rcipes
     li.recipesList_cards {
       display: flex;
       flex-direction: column;
@@ -17,10 +21,14 @@ main {
       padding-bottom: 1rem;
       background: map-get(utils.$colors, lightgrey);
       @include utils.borders;
+
+      // Container picture
       picture {
         display: block;
         overflow: hidden;
       }
+
+      // Image
       img {
         object-fit: cover;
         object-position: top;
@@ -31,6 +39,7 @@ main {
   }
 }
 
+// Container for recipe title and timer
 .li_title {
   display: flex;
   flex-direction: row;
@@ -38,12 +47,16 @@ main {
   justify-content: space-between;
   width: 100%;
   padding: 1.3rem 0.9rem;
+
+  // Title recipe
   h2 {
     margin: 0;
     font-family: utils.$lato;
     font-size: map-get(utils.$sizes, med);
     font-weight: map-get(utils.$weights, regular);
   }
+
+  // Timer for recipe
   aside {
     font-family: utils.$lato;
     font-size: map-get(utils.$sizes, med);
@@ -51,17 +64,22 @@ main {
   }
 }
 
+// Container for ingredients and description recipes
 .li_recipe {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
   padding: 0 0.9rem;
+
+  // Container for ingredients
   .recipe_ingredients {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     width: 48%;
+
+    // Ingredients
     li {
       width: 100%;
       height: fit-content;
@@ -75,6 +93,8 @@ main {
       }
     }
   }
+
+  // Container for description
   .recipe_description {
     width: 48%;
     margin: 0;
@@ -86,6 +106,8 @@ main {
     font-family: utils.$roboto;
     font-size: map-get(utils.$sizes, xs);
     font-weight: map-get(utils.$weights, regular);
+
+    // display "..." when text content is > 9 lines
     &:before {
       content: "...";
       position: absolute;
