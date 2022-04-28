@@ -22,6 +22,7 @@ fieldset.nav_searchTags {
       left: 0;
       width: 100%;
       height: 54px;
+      padding-right: 43px;
       @include utils.borders;
       color: map-get(utils.$colors, snow);
     }
