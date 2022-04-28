@@ -109,9 +109,9 @@ main ul.main_recipesList li.recipesList_cards {
   display: flex;
   flex-direction: column;
   width: 31%;
-  height: 460px;
+  height: 510px;
   margin-bottom: 2rem;
-  padding-bottom: 1rem;
+  padding-bottom: 0.8rem;
   background: #e7e7e7;
   border: none;
   outline: none;
