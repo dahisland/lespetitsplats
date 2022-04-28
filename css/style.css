@@ -9,11 +9,26 @@ html {
   width: 100%;
   height: 100%;
 }
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
 
 body {
   margin: 0 auto;
   padding: 0 3.5rem;
   background: #fff;
+}
+@media screen and (max-width: 1200px) {
+  body {
+    padding: 0 2.5rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  body {
+    padding: 0 1rem;
+  }
 }
 
 span.icons {
@@ -56,6 +71,11 @@ form button {
   font-size: 1.5rem;
   cursor: pointer;
 }
+@media screen and (max-width: 768px) {
+  form {
+    font-size: 0.8rem;
+  }
+}
 
 .selectedTags_item--unchecked {
   cursor: pointer;
@@ -97,12 +117,22 @@ header h1 {
 main {
   margin-top: 2rem;
 }
+@media screen and (max-width: 768px) {
+  main {
+    margin-top: 4.5rem;
+  }
+}
 main ul.main_recipesList {
   display: inline-flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 3.5%;
   width: 100%;
+}
+@media screen and (max-width: 1200px) {
+  main ul.main_recipesList {
+    gap: 4%;
+  }
 }
 main ul.main_recipesList li.recipesList_cards {
   display: flex;
@@ -115,6 +145,16 @@ main ul.main_recipesList li.recipesList_cards {
   border: none;
   outline: none;
   border-radius: 0.3rem;
+}
+@media screen and (max-width: 1200px) {
+  main ul.main_recipesList li.recipesList_cards {
+    width: 48%;
+  }
+}
+@media screen and (max-width: 768px) {
+  main ul.main_recipesList li.recipesList_cards {
+    width: 100%;
+  }
 }
 main ul.main_recipesList li.recipesList_cards picture {
   display: block;
@@ -223,6 +263,18 @@ fieldset.nav_searchTags {
   display: flex;
   flex-direction: row;
 }
+@media screen and (max-width: 1200px) {
+  fieldset.nav_searchTags {
+    justify-content: space-between;
+  }
+}
+@media screen and (max-width: 768px) {
+  fieldset.nav_searchTags {
+    flex-direction: column;
+    height: 130px;
+    justify-content: space-between;
+  }
+}
 fieldset.nav_searchTags .searchTags_filter {
   position: relative;
   border: none;
@@ -232,6 +284,18 @@ fieldset.nav_searchTags .searchTags_filter {
   width: fit-content;
   height: fit-content;
   margin-right: 1%;
+}
+@media screen and (max-width: 1200px) {
+  fieldset.nav_searchTags .searchTags_filter {
+    min-width: 25%;
+    margin-right: inherit;
+  }
+}
+@media screen and (max-width: 768px) {
+  fieldset.nav_searchTags .searchTags_filter {
+    min-width: 100%;
+    margin-right: inherit;
+  }
 }
 fieldset.nav_searchTags .searchTags_filter input {
   position: absolute;
@@ -293,10 +357,26 @@ fieldset.nav_searchTags ul.searchTags_tagsList {
   padding: 0.9rem;
   width: 100%;
 }
+@media screen and (max-width: 1200px) {
+  fieldset.nav_searchTags ul.searchTags_tagsList {
+    justify-content: space-between;
+  }
+}
 fieldset.nav_searchTags ul.searchTags_tagsList li {
   width: 32%;
   color: #fff;
   padding: 0.2rem 0rem;
+}
+@media screen and (max-width: 1200px) {
+  fieldset.nav_searchTags ul.searchTags_tagsList li {
+    width: 49%;
+  }
+}
+@media screen and (max-width: 768px) {
+  fieldset.nav_searchTags ul.searchTags_tagsList li {
+    width: 100%;
+    font-size: 1rem;
+  }
 }
 
 ul.nav_selectedTags {

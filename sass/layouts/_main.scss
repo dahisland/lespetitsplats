@@ -2,6 +2,9 @@
 
 main {
   margin-top: 2rem;
+  @include utils.responsive(tabs) {
+    margin-top: 4.5rem;
+  }
 
   // container for recipes li cards
   ul.main_recipesList {
@@ -10,6 +13,9 @@ main {
     flex-wrap: wrap;
     gap: 3.5%;
     width: 100%;
+    @include utils.responsive(desktop) {
+      gap: 4%;
+    }
 
     // li cards rcipes
     li.recipesList_cards {
@@ -21,6 +27,12 @@ main {
       padding-bottom: 0.8rem;
       background: map-get(utils.$colors, lightgrey);
       @include utils.borders;
+      @include utils.responsive(desktop) {
+        width: 48%;
+      }
+      @include utils.responsive(tabs) {
+        width: 100%;
+      }
 
       // Container picture
       picture {

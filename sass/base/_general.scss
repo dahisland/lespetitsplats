@@ -10,11 +10,20 @@ html {
   margin: 0;
   width: 100%;
   height: 100%;
+  @include utils.responsive(tabs) {
+    font-size: 16px;
+  }
 }
 body {
   margin: 0 auto;
   padding: 0 3.5rem;
   background: map-get(utils.$colors, snow);
+  @include utils.responsive(desktop) {
+    padding: 0 2.5rem;
+  }
+  @include utils.responsive(tabs) {
+    padding: 0 1rem;
+  }
 }
 
 span.icons {
@@ -55,6 +64,9 @@ form {
     height: 60px;
     font-size: 1.5rem;
     cursor: pointer;
+  }
+  @include utils.responsive(tabs) {
+    font-size: 0.8rem;
   }
 }
 
