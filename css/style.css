@@ -249,26 +249,32 @@ fieldset.nav_searchTags .searchTags_filter:nth-child(1) {
   background: #3282f7;
 }
 fieldset.nav_searchTags .searchTags_filter:nth-child(1) input,
-fieldset.nav_searchTags .searchTags_filter:nth-child(1) ul {
+fieldset.nav_searchTags .searchTags_filter:nth-child(1) ul,
+fieldset.nav_searchTags .searchTags_filter:nth-child(1) button {
   background: #3282f7;
 }
 fieldset.nav_searchTags .searchTags_filter:nth-child(2) {
   background: #68d9a4;
 }
 fieldset.nav_searchTags .searchTags_filter:nth-child(2) input,
-fieldset.nav_searchTags .searchTags_filter:nth-child(2) ul {
+fieldset.nav_searchTags .searchTags_filter:nth-child(2) ul,
+fieldset.nav_searchTags .searchTags_filter:nth-child(2) button {
   background: #68d9a4;
 }
 fieldset.nav_searchTags .searchTags_filter:nth-child(3) {
   background: #ed6454;
 }
 fieldset.nav_searchTags .searchTags_filter:nth-child(3) input,
-fieldset.nav_searchTags .searchTags_filter:nth-child(3) ul {
+fieldset.nav_searchTags .searchTags_filter:nth-child(3) ul,
+fieldset.nav_searchTags .searchTags_filter:nth-child(3) button {
   background: #ed6454;
 }
 fieldset.nav_searchTags .searchTags_filter button {
   color: #fff;
   font-size: 1rem;
+  height: 54px;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
 }
 fieldset.nav_searchTags .searchTags_filter button.searchTags_btnUp {
   display: none;

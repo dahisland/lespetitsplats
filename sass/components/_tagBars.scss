@@ -30,7 +30,8 @@ fieldset.nav_searchTags {
     &:nth-child(1) {
       background: map-get(utils.$colors, sea);
       input,
-      ul {
+      ul,
+      button {
         background: map-get(utils.$colors, sea);
       }
     }
@@ -39,7 +40,8 @@ fieldset.nav_searchTags {
     &:nth-child(2) {
       background: map-get(utils.$colors, grass);
       input,
-      ul {
+      ul,
+      button {
         background: map-get(utils.$colors, grass);
       }
     }
@@ -48,7 +50,8 @@ fieldset.nav_searchTags {
     &:nth-child(3) {
       background: map-get(utils.$colors, tomato);
       input,
-      ul {
+      ul,
+      button {
         background: map-get(utils.$colors, tomato);
       }
     }
@@ -57,6 +60,9 @@ fieldset.nav_searchTags {
     button {
       color: map-get(utils.$colors, snow);
       font-size: 1rem;
+      height: 54px;
+      padding-left: 0.3rem;
+      padding-right: 0.3rem;
     }
 
     // Buttons with icons arrow up
