@@ -1,5 +1,3 @@
-const containerRecipes = document.querySelector(".main_recipesList");
-
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------- GET CARDS RECIPES //
 // ------------------------------------------------------------------------------------------- //
@@ -14,7 +12,6 @@ class recipe {
 
   getCard() {
     const container = document.createElement("li");
-    container.setAttribute("data-visibility", "visible");
     container.classList.add("recipesList_cards");
 
     const picture = document.createElement("picture");
@@ -68,7 +65,8 @@ class recipe {
     container.appendChild(picture);
     container.appendChild(banner);
     container.appendChild(content);
-    containerRecipes.appendChild(container);
+    // containerRecipes.appendChild(container);
+    return container;
   }
 }
 

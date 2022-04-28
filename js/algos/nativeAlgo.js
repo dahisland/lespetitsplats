@@ -1,38 +1,38 @@
+import * as mess from "../patterns/message.js";
+
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------- ALGORITM FOR SEARCH BAR IN NATIVE //
 // ------------------------------------------------------------------------------------------- //
+const containerRecipes = document.querySelector(".main_recipesList");
+let arrayRecipesFiltered = [];
 
-function searchInRecipes(containerRecipes, inputValue, wordSearch) {
+function searchInRecipes(wordSearch, array) {
   let regexInput = new RegExp(`\\ ${wordSearch}\\ ?`, "gi");
-  const messageNoMatch = document.querySelector(".main_noMatchMessage");
-
-  for (let element of containerRecipes) {
-    let noCaseIngredients = element.textContent
+  containerRecipes.innerHTML = "";
+  arrayRecipesFiltered.length = 0;
+  for (let el of array) {
+    let normalizeIngredients = el.textContent
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[\:\'\,\.\(\)\!\?\;]/g, " ")
       .replace(/[\s]{2,}/g, " ")
       .toLowerCase();
-    if (inputValue.length > 2 && noCaseIngredients.match(regexInput)) {
-      element.style.display = "flex";
-      element.setAttribute("data-visibility", "visible");
-      messageNoMatch.style.display = "none";
+    if (wordSearch.length > 2 && normalizeIngredients.match(regexInput)) {
+      arrayRecipesFiltered.push(el);
     } else if (
-      inputValue.length > 2 &&
-      noCaseIngredients.substring(0, wordSearch.length) == wordSearch
+      wordSearch.length > 2 &&
+      normalizeIngredients.substring(0, wordSearch.length) == wordSearch
     ) {
-      element.style.display = "flex";
-      element.setAttribute("data-visibility", "visible");
-      messageNoMatch.style.display = "none";
-    } else if (inputValue.length < 3) {
-      element.style.display = "flex";
-      element.setAttribute("data-visibility", "visible");
-      messageNoMatch.style.display = "none";
-    } else {
-      element.style.display = "none";
-      element.setAttribute("data-visibility", "hidden");
-      messageNoMatch.style.display = "none";
+      arrayRecipesFiltered.push(el);
+    } else if (wordSearch.length < 3) {
+      arrayRecipesFiltered.push(el);
     }
+  }
+  if (arrayRecipesFiltered.length == 0) {
+    containerRecipes.appendChild(mess.messageNoFound());
+  }
+  for (let elFilt of arrayRecipesFiltered) {
+    containerRecipes.appendChild(elFilt);
   }
 }
 
