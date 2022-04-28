@@ -20,7 +20,8 @@ class tagsListFilter {
   getTagsList() {
     let noCaseString = this.tag
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
     let displayString = this.tag[0].toUpperCase() + this.tag.substring(1);
     let elementTagList = document.createElement("li");
     elementTagList.classList.add("selectedTags_item--unchecked");

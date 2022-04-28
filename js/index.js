@@ -2,6 +2,7 @@ import * as animNav from "./utils/animNav.js";
 import * as data from "./data/recipes.js";
 import * as card from "./patterns/cards.js";
 import * as tags from "./patterns/tagsList.js";
+import * as algo from "./algos/nativeAlgo.js";
 
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------------------------------- VARIABLES //
@@ -11,6 +12,8 @@ const tagsFilters = document.querySelectorAll(".searchTags_filter");
 const downBtns = document.querySelectorAll(".searchTags_btnDown");
 const upBtns = document.querySelectorAll(".searchTags_btnUp");
 const ulTagsList = document.querySelectorAll(".searchTags_tagsList");
+const searchInput = document.querySelector(".searchBar_input");
+const messageNoMatch = document.querySelector(".main_noMatchMessage");
 
 // Animation of tags filters
 animNav.animDownFilters(downBtns, tagsFilters);
@@ -76,3 +79,40 @@ allTags.forEach((tag) => {
     tags.unselectTag(tag);
   });
 });
+
+//
+
+// ------------------------------------------------------------------------------------------- //
+// --------------------------------------------------- ALGORITM FOR SEARCH BAR ON INPUT EVENTS //
+// ------------------------------------------------------------------------------------------- //
+
+let recipeCards = document.querySelectorAll("li[data-visibility=visible]");
+
+searchInput.addEventListener("input", (e) => {
+  let searchUser = e.target.value;
+  let noCaseSearchUser = searchUser
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\:\'\,\.\(\)\!\?\;]/g, " ")
+    .replace(/[\s]{2,}/g, " ")
+    .toLowerCase();
+
+  algo.searchInRecipes(recipeCards, noCaseSearchUser, noCaseSearchUser);
+  let recipesHidden = document.querySelectorAll("li[data-visibility=hidden]");
+  if (recipesHidden.length == recipeCards.length) {
+    messageNoMatch.style.display = "block";
+  }
+
+  // const regexp = /[a-zA-Z]{3,}\ ?/gi;
+  // let test = noCaseSearchUser.split(" ");
+
+  //   for (let i = 0; i < test.length; i++) {
+  //     let wordToSearch = test[i];
+  //     searchInRecipes(noCaseSearchUser, wordToSearch);
+  //     recipeCards = document.querySelectorAll(
+  //       "li[class=recipesList_cards][data-visibility=visible]"
+  //     );
+  //   }
+});
+
+//

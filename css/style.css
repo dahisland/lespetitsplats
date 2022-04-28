@@ -77,6 +77,12 @@ form button {
   text-decoration: none;
 }
 
+.main_noMatchMessage {
+  color: #adadad;
+  font-style: italic;
+  display: none;
+}
+
 header {
   margin: 1.5rem 0;
   text-align: center;
@@ -93,10 +99,10 @@ main {
   margin-top: 2rem;
 }
 main ul.main_recipesList {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 3.5%;
   width: 100%;
 }
 main ul.main_recipesList li.recipesList_cards {
@@ -113,7 +119,6 @@ main ul.main_recipesList li.recipesList_cards {
 }
 main ul.main_recipesList li.recipesList_cards picture {
   display: block;
-  overflow: hidden;
 }
 main ul.main_recipesList li.recipesList_cards img {
   object-fit: cover;
@@ -148,6 +153,7 @@ main ul.main_recipesList li.recipesList_cards img {
   justify-content: space-between;
   width: 100%;
   padding: 0 0.9rem;
+  overflow: hidden;
 }
 .li_recipe .recipe_ingredients {
   display: flex;
@@ -172,7 +178,7 @@ main ul.main_recipesList li.recipesList_cards img {
   margin: 0;
   position: relative;
   line-height: 1rem;
-  max-height: 9rem;
+  max-height: 8rem;
   overflow: hidden;
   padding-right: 1rem;
   font-family: "Roboto", sans-serif;

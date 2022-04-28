@@ -5,10 +5,10 @@ main {
 
   // container for recipes li cards
   ul.main_recipesList {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    gap: 3.5%;
     width: 100%;
 
     // li cards rcipes
@@ -25,7 +25,6 @@ main {
       // Container picture
       picture {
         display: block;
-        overflow: hidden;
       }
 
       // Image
@@ -71,6 +70,7 @@ main {
   justify-content: space-between;
   width: 100%;
   padding: 0 0.9rem;
+  overflow: hidden;
 
   // Container for ingredients
   .recipe_ingredients {
@@ -100,7 +100,7 @@ main {
     margin: 0;
     position: relative;
     line-height: 1rem;
-    max-height: 9rem;
+    max-height: 8rem;
     overflow: hidden;
     padding-right: 1rem;
     font-family: utils.$roboto;

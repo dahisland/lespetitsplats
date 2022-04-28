@@ -81,3 +81,10 @@ form {
     text-decoration: none;
   }
 }
+//Class fot style Message "no found search"
+
+.main_noMatchMessage {
+  color: map-get(utils.$colors, nightgrey);
+  font-style: italic;
+  display: none;
+}

@@ -38,7 +38,7 @@ class recipe {
     icon.classList.add("fa-clock");
     icon.classList.add("icons");
     timer.appendChild(icon);
-    timer.innerHTML += " " + this.time + "min";
+    timer.innerHTML += " " + this.time + "min ";
 
     const content = document.createElement("div");
     content.classList.add("li_recipe");
@@ -50,13 +50,13 @@ class recipe {
     for (let i = 0; i < this.ingredients.length; i++) {
       let containerIng = document.createElement("li");
       let span = document.createElement("span");
-      span.innerHTML = this.ingredients[i].ingredient;
+      span.innerHTML = this.ingredients[i].ingredient + " ";
       containerIng.appendChild(span);
       if (this.ingredients[i].quantity != undefined) {
-        containerIng.innerHTML += " : " + this.ingredients[i].quantity;
+        containerIng.innerHTML += ": " + this.ingredients[i].quantity + " ";
       }
       if (this.ingredients[i].unit != undefined) {
-        containerIng.innerHTML += " " + this.ingredients[i].unit;
+        containerIng.innerHTML += this.ingredients[i].unit + " ";
       }
       list.appendChild(containerIng);
     }
