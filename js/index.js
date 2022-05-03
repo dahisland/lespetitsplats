@@ -3,6 +3,7 @@ import * as data from "./data/recipes.js";
 import * as card from "./patterns/cards.js";
 import * as tags from "./patterns/tagsList.js";
 import * as algo from "./algos/nativeAlgo.js";
+import * as norm from "./utils/normalizeTxt.js";
 
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------------------------------- VARIABLES //
@@ -14,7 +15,10 @@ const upBtns = document.querySelectorAll(".searchTags_btnUp");
 const ulTagsList = document.querySelectorAll(".searchTags_tagsList");
 const searchInput = document.querySelector(".searchBar_input");
 const containerRecipes = document.querySelector(".main_recipesList");
+
 let arrayRecipes = [];
+let arrayRecipesFiltered = [];
+
 // Animation of tags filters
 animNav.animDownFilters(downBtns, tagsFilters);
 animNav.animUpFilters(upBtns, tagsFilters);
@@ -78,14 +82,14 @@ for (let element of arrayRecipes) {
 
 searchInput.addEventListener("input", (e) => {
   let searchUser = e.target.value;
-  let normalizeSearchUser = searchUser
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[\:\'\,\.\(\)\!\?\;]/g, " ")
-    .replace(/[\s]{2,}/g, " ")
-    .toLowerCase();
+  let normalizeSearchUser = norm.getNormalizeText(searchUser);
 
-  algo.searchInRecipes(normalizeSearchUser, arrayRecipes);
+  algo.searchInRecipes(
+    containerRecipes,
+    normalizeSearchUser,
+    arrayRecipes,
+    arrayRecipesFiltered
+  );
 });
 
 // ------------------------------------------------------------------------------------------- //

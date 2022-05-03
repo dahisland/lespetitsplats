@@ -1,38 +1,32 @@
 import * as mess from "../patterns/message.js";
+import * as norm from "../utils/normalizeTxt.js";
 
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------- ALGORITM FOR SEARCH BAR IN NATIVE //
 // ------------------------------------------------------------------------------------------- //
-const containerRecipes = document.querySelector(".main_recipesList");
-let arrayRecipesFiltered = [];
 
-function searchInRecipes(wordSearch, array) {
+function searchInRecipes(container, wordSearch, array, arrayFiltered) {
   let regexInput = new RegExp(`\\ ${wordSearch}\\ ?`, "gi");
-  containerRecipes.innerHTML = "";
-  arrayRecipesFiltered.length = 0;
+  container.innerHTML = "";
+  arrayFiltered.length = 0;
   for (let el of array) {
-    let normalizeIngredients = el.textContent
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[\:\'\,\.\(\)\!\?\;]/g, " ")
-      .replace(/[\s]{2,}/g, " ")
-      .toLowerCase();
+    let normalizeIngredients = norm.getNormalizeText(el.textContent);
     if (wordSearch.length > 2 && normalizeIngredients.match(regexInput)) {
-      arrayRecipesFiltered.push(el);
+      arrayFiltered.push(el);
     } else if (
       wordSearch.length > 2 &&
       normalizeIngredients.substring(0, wordSearch.length) == wordSearch
     ) {
-      arrayRecipesFiltered.push(el);
+      arrayFiltered.push(el);
     } else if (wordSearch.length < 3) {
-      arrayRecipesFiltered.push(el);
+      arrayFiltered.push(el);
     }
   }
-  if (arrayRecipesFiltered.length == 0) {
-    containerRecipes.appendChild(mess.messageNoFound());
+  if (arrayFiltered.length == 0) {
+    container.appendChild(mess.messageNoFound());
   }
-  for (let elFilt of arrayRecipesFiltered) {
-    containerRecipes.appendChild(elFilt);
+  for (let elFilt of arrayFiltered) {
+    container.appendChild(elFilt);
   }
 }
 
