@@ -2,7 +2,7 @@ import * as animNav from "./utils/animNav.js";
 import * as data from "./data/recipes.js";
 import * as card from "./patterns/cards.js";
 import * as tags from "./patterns/tagsList.js";
-import * as algo from "./algos/nativeAlgo.js";
+import * as algo from "./algos/functionalAlgo.js";
 import * as norm from "./utils/normalizeTxt.js";
 
 // ------------------------------------------------------------------------------------------- //
