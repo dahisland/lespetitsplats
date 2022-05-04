@@ -1,5 +1,4 @@
 import * as mess from "../patterns/message.js";
-import * as norm from "../utils/normalizeTxt.js";
 
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------- ALGORITM FOR SEARCH BAR IN NATIVE //
@@ -10,12 +9,11 @@ function searchInRecipes(container, wordSearch, array, arrayFiltered) {
   container.innerHTML = "";
   arrayFiltered.length = 0;
   for (let el of array) {
-    let normalizeIngredients = norm.getNormalizeText(el.li.textContent);
-    if (wordSearch.length > 2 && normalizeIngredients.match(regexInput)) {
+    if (wordSearch.length > 2 && el.contentTxt.match(regexInput)) {
       arrayFiltered.push(el);
     } else if (
       wordSearch.length > 2 &&
-      normalizeIngredients.substring(0, wordSearch.length) == wordSearch
+      el.contentTxt.substring(0, wordSearch.length) == wordSearch
     ) {
       arrayFiltered.push(el);
     } else if (wordSearch.length < 3) {
