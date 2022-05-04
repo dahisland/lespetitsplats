@@ -5,29 +5,33 @@ import * as norm from "../utils/normalizeTxt.js";
 // --------------------------------------------------------- ALGORITM FOR SEARCH BAR IN NATIVE //
 // ------------------------------------------------------------------------------------------- //
 
-function searchInRecipes(container, wordSearch, array, arrayFiltered) {
+function searchInRecipes(container, wordSearch, array) {
   let regexInput = new RegExp(`\\ ${wordSearch}\\ ?`, "gi");
   container.innerHTML = "";
-  arrayFiltered.length = 0;
-  for (let el of array) {
-    let normalizeIngredients = norm.getNormalizeText(el.li.textContent);
+
+  function filterArray(obj) {
+    let normalizeIngredients = norm.getNormalizeText(obj.li.textContent);
     if (wordSearch.length > 2 && normalizeIngredients.match(regexInput)) {
-      arrayFiltered.push(el);
+      return true;
     } else if (
       wordSearch.length > 2 &&
       normalizeIngredients.substring(0, wordSearch.length) == wordSearch
     ) {
-      arrayFiltered.push(el);
+      return true;
     } else if (wordSearch.length < 3) {
-      arrayFiltered.push(el);
+      return true;
+    } else {
+      return false;
     }
   }
+  let arrayFiltered = array.filter(filterArray);
   if (arrayFiltered.length == 0) {
     container.appendChild(mess.messageNoFound());
   }
-  for (let elFilt of arrayFiltered) {
+  arrayFiltered.forEach((elFilt) => {
     container.appendChild(elFilt.li);
-  }
+  });
+  return arrayFiltered;
 }
 
 export { searchInRecipes };

@@ -24,8 +24,8 @@ const containerRecipes = document.querySelector(".main_recipesList");
 // ------------------------------------------------------------------------------------------- //
 
 // ----------------------------------------------------- Containers recipes & recipes filtered //
+
 let arrayRecipes = [];
-let arrayRecipesFiltered = [];
 
 // ------------------------------------------------------------------------------------------- //
 // ----------------------------------------------------------------------------------- OBJECTS //
@@ -111,18 +111,20 @@ searchInput.addEventListener("input", (e) => {
   containerTagsUstensil.innerHTML = "";
 
   // Update cards recipes displays
-  algo.searchInRecipes(
+
+  let arrayRecipesFiltered = algo.searchInRecipes(
     containerRecipes,
     normalizeSearchUser,
-    arrayRecipes,
-    arrayRecipesFiltered
+    arrayRecipes
   );
+  algo.searchInRecipes(containerRecipes, normalizeSearchUser, arrayRecipes);
+
   // Update tags list displays
-  for (let element of arrayRecipesFiltered) {
+  arrayRecipesFiltered.forEach((element) => {
     tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
     tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
     tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
-  }
+  });
 });
 
 // ------------------------------------------------------------------------------------------- //
