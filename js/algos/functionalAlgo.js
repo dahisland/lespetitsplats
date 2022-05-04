@@ -1,5 +1,4 @@
 import * as mess from "../patterns/message.js";
-import * as norm from "../utils/normalizeTxt.js";
 
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------- ALGORITM FOR SEARCH BAR IN NATIVE //
