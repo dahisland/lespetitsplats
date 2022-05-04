@@ -10,12 +10,11 @@ function searchInRecipes(container, wordSearch, array) {
   container.innerHTML = "";
 
   function filterArray(obj) {
-    let normalizeIngredients = norm.getNormalizeText(obj.li.textContent);
-    if (wordSearch.length > 2 && normalizeIngredients.match(regexInput)) {
+    if (wordSearch.length > 2 && obj.contentTxt.match(regexInput)) {
       return true;
     } else if (
       wordSearch.length > 2 &&
-      normalizeIngredients.substring(0, wordSearch.length) == wordSearch
+      obj.contentTxt.substring(0, wordSearch.length) == wordSearch
     ) {
       return true;
     } else if (wordSearch.length < 3) {

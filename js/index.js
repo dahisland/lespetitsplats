@@ -98,7 +98,6 @@ for (let element of arrayRecipes) {
     tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
   }
 }
-
 // ------------------------------------------------------------------------------------------- //
 // ---------------------------------------------------- CALL NATIVE SEARCH ALGO ON EVENT INPUT //
 // ------------------------------------------------------------------------------------------- //

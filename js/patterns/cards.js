@@ -82,7 +82,9 @@ class recipe {
       name: norm.getNormalizeText(this.name),
       li: container,
       tags: [],
-      description: norm.getNormalizeText(this.description),
+      contentTxt: norm.getNormalizeText(
+        this.name + " " + ingredientsByRecipeArr + " " + this.description
+      ),
     };
 
     for (let i = 0; i < this.ingredients.length; i++) {
