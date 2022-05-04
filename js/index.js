@@ -13,13 +13,34 @@ const tagsFilters = document.querySelectorAll(".searchTags_filter");
 const downBtns = document.querySelectorAll(".searchTags_btnDown");
 const upBtns = document.querySelectorAll(".searchTags_btnUp");
 const ulTagsList = document.querySelectorAll(".searchTags_tagsList");
+const containerTagsIngredients = ulTagsList[0];
+const containerTagsAppliances = ulTagsList[1];
+const containerTagsUstensils = ulTagsList[2];
 const searchInput = document.querySelector(".searchBar_input");
 const containerRecipes = document.querySelector(".main_recipesList");
 
+// ------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------------------------ ARRAYS //
+// ------------------------------------------------------------------------------------------- //
+
+// ----------------------------------------------------- Containers recipes & recipes filtered //
 let arrayRecipes = [];
 let arrayRecipesFiltered = [];
 
-// Animation of tags filters
+// ----------------------------------------------------------------- Containers for tags lists //
+let arrayTagsIngredients = [];
+let arrayTagsAppliances = [];
+let arrayTagsUstensils = [];
+
+// ------------------------------------------------------- TextContent normalized of tags list //
+let ingredientsArr = [];
+let applianceArr = [];
+let ustensilsArr = [];
+
+// ------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------- INTERACTIONS FOR TAGS FILTERS //
+// ------------------------------------------------------------------------------------------- //
+
 animNav.animDownFilters(downBtns, tagsFilters);
 animNav.animUpFilters(upBtns, tagsFilters);
 
@@ -35,36 +56,62 @@ data.recipes.forEach((rec) => {
     rec.ingredients,
     rec.description
   );
-  arrayRecipes.push(cardRecipe.getCard());
+
+  let ingredientsByRecipeArr = [];
+  ingredientsByRecipeArr.length = 0;
+  for (let i = 0; i < rec.ingredients.length; i++) {
+    ingredientsByRecipeArr.push(rec.ingredients[i].ingredient);
+  }
+  // Create obj with container li, tags & description for each recipe
+  let objRecipe = {
+    name: norm.getNormalizeText(rec.name),
+    li: cardRecipe.getCard(),
+    tags: norm.getNormalizeText(
+      ingredientsByRecipeArr.toString() +
+        " " +
+        rec.appliance +
+        " " +
+        rec.ustensils
+    ),
+    description: norm.getNormalizeText(rec.description),
+  };
+  console.log(rec.ustensils);
+  // Push obj in an array
+  arrayRecipes.push(objRecipe);
 
   // ------------------------------------------------ Get data tags lists for each tags filter //
 
-  // Get tags list ingredients
   for (let i = 0; i < rec.ingredients.length; i++) {
-    let tagsListIngredients = new tags.tagsListFilter(
+    tags.createArrayTagsList(
       rec.ingredients[i].ingredient,
-      tags.ingredientsArr,
-      ulTagsList[0]
+      ingredientsArr,
+      arrayTagsIngredients
     );
-    tagsListIngredients.getTagsList();
   }
-  // Get tags list ustensils
   for (let i = 0; i < rec.ustensils.length; i++) {
-    let tagsListUstensils = new tags.tagsListFilter(
+    tags.createArrayTagsList(
       rec.ustensils[i],
-      tags.ustensilsArr,
-      ulTagsList[2]
+      ustensilsArr,
+      arrayTagsUstensils
     );
-    tagsListUstensils.getTagsList();
   }
-  // Get tags list appliances
-  let tagsListAppliance = new tags.tagsListFilter(
-    rec.appliance,
-    tags.applianceArr,
-    ulTagsList[1]
-  );
-  tagsListAppliance.getTagsList();
+  tags.createArrayTagsList(rec.appliance, applianceArr, arrayTagsAppliances);
 });
+// ------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------------- DISPLAY TAGS LIST //
+// ------------------------------------------------------------------------------------------- //
+
+tags.displayTagsLists(
+  arrayRecipes,
+  containerTagsIngredients,
+  arrayTagsIngredients
+);
+tags.displayTagsLists(
+  arrayRecipes,
+  containerTagsAppliances,
+  arrayTagsAppliances
+);
+tags.displayTagsLists(arrayRecipes, containerTagsUstensils, arrayTagsUstensils);
 
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------------------- DISPLAY CARDS RECIPES //
@@ -72,7 +119,7 @@ data.recipes.forEach((rec) => {
 
 for (let element of arrayRecipes) {
   if (searchInput.value == "") {
-    containerRecipes.appendChild(element);
+    containerRecipes.appendChild(element.li);
   }
 }
 
@@ -89,6 +136,21 @@ searchInput.addEventListener("input", (e) => {
     normalizeSearchUser,
     arrayRecipes,
     arrayRecipesFiltered
+  );
+  tags.displayTagsLists(
+    arrayRecipesFiltered,
+    containerTagsIngredients,
+    arrayTagsIngredients
+  );
+  tags.displayTagsLists(
+    arrayRecipesFiltered,
+    containerTagsUstensils,
+    arrayTagsUstensils
+  );
+  tags.displayTagsLists(
+    arrayRecipesFiltered,
+    containerTagsAppliances,
+    arrayTagsAppliances
   );
 });
 

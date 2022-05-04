@@ -1,38 +1,56 @@
+import * as norm from "../utils/normalizeTxt.js";
+
 // ------------------------------------------------------------------------------------------- //
 // ----------------------------------------------------------------- ARRAYS FOR EACH TAGS LIST //
 // ------------------------------------------------------------------------------------------- //
-
-let ingredientsArr = [];
-let applianceArr = [];
-let ustensilsArr = [];
 
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------- GET INITIALS TAGS LISTS //
 // ------------------------------------------------------------------------------------------- //
 
 // Generate initial tags list for each tags list filter
+
 class tagsListFilter {
-  constructor(tag, arrayTag, containerList) {
+  constructor(tag, arrayTag) {
     this.tag = tag;
     this.arrayTag = arrayTag;
-    this.containerList = containerList;
   }
-  getTagsList() {
-    let noCaseString = this.tag
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase();
+  createTagsList() {
+    let noCaseString = norm.getNormalizeText(this.tag);
     let displayString = this.tag[0].toUpperCase() + this.tag.substring(1);
     let elementTagList = document.createElement("li");
     elementTagList.classList.add("selectedTags_item--unchecked");
     elementTagList.setAttribute("data-status", "unchecked");
 
-    if (!this.arrayTag.includes(noCaseString)) {
+    if (this.arrayTag.includes(noCaseString) == false) {
       this.arrayTag.push(noCaseString);
       elementTagList.innerHTML = displayString;
-      this.containerList.appendChild(elementTagList);
     }
+    return elementTagList;
   }
+}
+
+// Function to create arrays containing tags lists elements
+function createArrayTagsList(dataTag, arrayTxtContent, arrayContainer) {
+  let tagsListItem = new tagsListFilter(dataTag, arrayTxtContent);
+  let tagItem = tagsListItem.createTagsList();
+  if (tagItem.textContent != "") {
+    arrayContainer.push(tagItem);
+  }
+}
+
+// Function to display tags lists in their containers
+function displayTagsLists(arrRecipe, containerTags, arrayTags) {
+  containerTags.innerHTML = "";
+  arrRecipe.forEach((arr) => {
+    let normalizeRecipeTxt = arr.tags;
+    for (let item of arrayTags) {
+      let normalizeTagsTxt = norm.getNormalizeText(item.textContent);
+      if (normalizeRecipeTxt.includes(normalizeTagsTxt) == true) {
+        containerTags.appendChild(item);
+      }
+    }
+  });
 }
 
 // ------------------------------------------------------------------------------------------- //
@@ -77,10 +95,9 @@ function unselectTag(element) {
 }
 
 export {
-  ingredientsArr,
-  applianceArr,
-  ustensilsArr,
   tagsListFilter,
+  createArrayTagsList,
+  displayTagsLists,
   selectTag,
   unselectTag,
 };

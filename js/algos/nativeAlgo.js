@@ -10,7 +10,7 @@ function searchInRecipes(container, wordSearch, array, arrayFiltered) {
   container.innerHTML = "";
   arrayFiltered.length = 0;
   for (let el of array) {
-    let normalizeIngredients = norm.getNormalizeText(el.textContent);
+    let normalizeIngredients = norm.getNormalizeText(el.li.textContent);
     if (wordSearch.length > 2 && normalizeIngredients.match(regexInput)) {
       arrayFiltered.push(el);
     } else if (
@@ -26,7 +26,7 @@ function searchInRecipes(container, wordSearch, array, arrayFiltered) {
     container.appendChild(mess.messageNoFound());
   }
   for (let elFilt of arrayFiltered) {
-    container.appendChild(elFilt);
+    container.appendChild(elFilt.li);
   }
 }
 
