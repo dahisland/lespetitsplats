@@ -8,49 +8,39 @@ import * as norm from "../utils/normalizeTxt.js";
 // ------------------------------------------------------------------- GET INITIALS TAGS LISTS //
 // ------------------------------------------------------------------------------------------- //
 
-// Generate initial tags list for each tags list filter
+// Generate initial tags list object for each tags list filter
 
 class tagsListFilter {
-  constructor(tag, arrayTag) {
+  constructor(tag) {
     this.tag = tag;
-    this.arrayTag = arrayTag;
   }
-  createTagsList() {
-    let noCaseString = norm.getNormalizeText(this.tag);
-    let displayString = this.tag[0].toUpperCase() + this.tag.substring(1);
-    let elementTagList = document.createElement("li");
-    elementTagList.classList.add("selectedTags_item--unchecked");
-    elementTagList.setAttribute("data-status", "unchecked");
+  createTagsList(objTagList) {
+    let normalizeTagTxt = norm.getNormalizeText(this.tag);
+    let upperTagTxt = this.tag[0].toUpperCase() + this.tag.substring(1);
 
-    if (this.arrayTag.includes(noCaseString) == false) {
-      this.arrayTag.push(noCaseString);
-      elementTagList.innerHTML = displayString;
+    if (objTagList.tags.includes(normalizeTagTxt) == false) {
+      let elementTagList = document.createElement("li");
+      elementTagList.classList.add("selectedTags_item--unchecked");
+      elementTagList.setAttribute("data-status", "unchecked");
+      objTagList.tags.push(normalizeTagTxt);
+      elementTagList.innerHTML = upperTagTxt;
+      objTagList.li.push(elementTagList);
     }
-    return elementTagList;
-  }
-}
-
-// Function to create arrays containing tags lists elements
-function createArrayTagsList(dataTag, arrayTxtContent, arrayContainer) {
-  let tagsListItem = new tagsListFilter(dataTag, arrayTxtContent);
-  let tagItem = tagsListItem.createTagsList();
-  if (tagItem.textContent != "") {
-    arrayContainer.push(tagItem);
   }
 }
 
 // Function to display tags lists in their containers
-function displayTagsLists(arrRecipe, containerTags, arrayTags) {
-  containerTags.innerHTML = "";
-  arrRecipe.forEach((arr) => {
-    let normalizeRecipeTxt = arr.tags;
-    for (let item of arrayTags) {
-      let normalizeTagsTxt = norm.getNormalizeText(item.textContent);
-      if (normalizeRecipeTxt.includes(normalizeTagsTxt) == true) {
-        containerTags.appendChild(item);
-      }
+
+function displayTagsLists(attr, containerTags, arrayTags) {
+  let normalizeRecipeTxt = attr.tags;
+  for (let item of arrayTags.li) {
+    if (
+      normalizeRecipeTxt.includes(norm.getNormalizeText(item.textContent)) ==
+      true
+    ) {
+      containerTags.appendChild(item);
     }
-  });
+  }
 }
 
 // ------------------------------------------------------------------------------------------- //
@@ -94,10 +84,4 @@ function unselectTag(element) {
   });
 }
 
-export {
-  tagsListFilter,
-  createArrayTagsList,
-  displayTagsLists,
-  selectTag,
-  unselectTag,
-};
+export { tagsListFilter, displayTagsLists, selectTag, unselectTag };

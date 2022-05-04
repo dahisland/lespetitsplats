@@ -5,14 +5,16 @@ import * as norm from "../utils/normalizeTxt.js";
 // ------------------------------------------------------------------------------------------- //
 
 class recipe {
-  constructor(name, time, ingredients, description) {
+  constructor(name, time, appliance, ustensils, ingredients, description) {
     this.name = name;
     this.time = time;
+    this.appliance = appliance;
+    this.ustensils = ustensils;
     this.ingredients = ingredients;
     this.description = description;
   }
 
-  getCard() {
+  getCard(arrRecipe) {
     const container = document.createElement("li");
     container.classList.add("recipesList_cards");
 
@@ -67,8 +69,34 @@ class recipe {
     container.appendChild(picture);
     container.appendChild(banner);
     container.appendChild(content);
-    // containerRecipes.appendChild(container);
-    return container;
+
+    // Create obj with container li, tags & description for each recipe
+
+    let ingredientsByRecipeArr = [];
+    ingredientsByRecipeArr.length = 0;
+    for (let i = 0; i < this.ingredients.length; i++) {
+      ingredientsByRecipeArr.push(this.ingredients[i].ingredient);
+    }
+
+    let objRecipe = {
+      name: norm.getNormalizeText(this.name),
+      li: container,
+      tags: [],
+      description: norm.getNormalizeText(this.description),
+    };
+
+    for (let i = 0; i < this.ingredients.length; i++) {
+      objRecipe.tags.push(
+        norm.getNormalizeText(this.ingredients[i].ingredient)
+      );
+    }
+    for (let i = 0; i < this.ustensils.length; i++) {
+      objRecipe.tags.push(norm.getNormalizeText(this.ustensils[i]));
+    }
+    objRecipe.tags.push(norm.getNormalizeText(this.appliance));
+
+    // Push obj in an array
+    arrRecipe.push(objRecipe);
   }
 }
 

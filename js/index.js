@@ -13,9 +13,9 @@ const tagsFilters = document.querySelectorAll(".searchTags_filter");
 const downBtns = document.querySelectorAll(".searchTags_btnDown");
 const upBtns = document.querySelectorAll(".searchTags_btnUp");
 const ulTagsList = document.querySelectorAll(".searchTags_tagsList");
-const containerTagsIngredients = ulTagsList[0];
-const containerTagsAppliances = ulTagsList[1];
-const containerTagsUstensils = ulTagsList[2];
+const containerTagsIngredient = ulTagsList[0];
+const containerTagsAppliance = ulTagsList[1];
+const containerTagsUstensil = ulTagsList[2];
 const searchInput = document.querySelector(".searchBar_input");
 const containerRecipes = document.querySelector(".main_recipesList");
 
@@ -27,15 +27,24 @@ const containerRecipes = document.querySelector(".main_recipesList");
 let arrayRecipes = [];
 let arrayRecipesFiltered = [];
 
-// ----------------------------------------------------------------- Containers for tags lists //
-let arrayTagsIngredients = [];
-let arrayTagsAppliances = [];
-let arrayTagsUstensils = [];
+// ------------------------------------------------------------------------------------------- //
+// ----------------------------------------------------------------------------------- OBJECTS //
+// ------------------------------------------------------------------------------------------- //
 
-// ------------------------------------------------------- TextContent normalized of tags list //
-let ingredientsArr = [];
-let applianceArr = [];
-let ustensilsArr = [];
+// ----------------------------------------------------------------- Containers for tags lists //
+
+let objTagsIngredient = {
+  tags: [],
+  li: [],
+};
+let objTagsUstensil = {
+  tags: [],
+  li: [],
+};
+let objTagsAppliance = {
+  tags: [],
+  li: [],
+};
 
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------- INTERACTIONS FOR TAGS FILTERS //
@@ -53,73 +62,40 @@ data.recipes.forEach((rec) => {
   let cardRecipe = new card.recipe(
     rec.name,
     rec.time,
+    rec.appliance,
+    rec.ustensils,
     rec.ingredients,
     rec.description
   );
-
-  let ingredientsByRecipeArr = [];
-  ingredientsByRecipeArr.length = 0;
-  for (let i = 0; i < rec.ingredients.length; i++) {
-    ingredientsByRecipeArr.push(rec.ingredients[i].ingredient);
-  }
-  // Create obj with container li, tags & description for each recipe
-  let objRecipe = {
-    name: norm.getNormalizeText(rec.name),
-    li: cardRecipe.getCard(),
-    tags: norm.getNormalizeText(
-      ingredientsByRecipeArr.toString() +
-        " " +
-        rec.appliance +
-        " " +
-        rec.ustensils
-    ),
-    description: norm.getNormalizeText(rec.description),
-  };
-  console.log(rec.ustensils);
-  // Push obj in an array
-  arrayRecipes.push(objRecipe);
+  cardRecipe.getCard(arrayRecipes);
 
   // ------------------------------------------------ Get data tags lists for each tags filter //
 
   for (let i = 0; i < rec.ingredients.length; i++) {
-    tags.createArrayTagsList(
-      rec.ingredients[i].ingredient,
-      ingredientsArr,
-      arrayTagsIngredients
+    let ingredientsClass = new tags.tagsListFilter(
+      rec.ingredients[i].ingredient
     );
+    ingredientsClass.createTagsList(objTagsIngredient);
   }
   for (let i = 0; i < rec.ustensils.length; i++) {
-    tags.createArrayTagsList(
-      rec.ustensils[i],
-      ustensilsArr,
-      arrayTagsUstensils
-    );
+    let ustensilsClass = new tags.tagsListFilter(rec.ustensils[i]);
+    ustensilsClass.createTagsList(objTagsUstensil);
   }
-  tags.createArrayTagsList(rec.appliance, applianceArr, arrayTagsAppliances);
+  let applianceClass = new tags.tagsListFilter(rec.appliance);
+  applianceClass.createTagsList(objTagsAppliance);
 });
-// ------------------------------------------------------------------------------------------- //
-// ------------------------------------------------------------------------- DISPLAY TAGS LIST //
-// ------------------------------------------------------------------------------------------- //
-
-tags.displayTagsLists(
-  arrayRecipes,
-  containerTagsIngredients,
-  arrayTagsIngredients
-);
-tags.displayTagsLists(
-  arrayRecipes,
-  containerTagsAppliances,
-  arrayTagsAppliances
-);
-tags.displayTagsLists(arrayRecipes, containerTagsUstensils, arrayTagsUstensils);
 
 // ------------------------------------------------------------------------------------------- //
-// --------------------------------------------------------------------- DISPLAY CARDS RECIPES //
+// --------------------------------------------------------- DISPLAY CARDS RECIPES & TAGS LIST //
 // ------------------------------------------------------------------------------------------- //
 
 for (let element of arrayRecipes) {
   if (searchInput.value == "") {
     containerRecipes.appendChild(element.li);
+
+    tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
+    tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
+    tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
   }
 }
 
@@ -130,28 +106,23 @@ for (let element of arrayRecipes) {
 searchInput.addEventListener("input", (e) => {
   let searchUser = e.target.value;
   let normalizeSearchUser = norm.getNormalizeText(searchUser);
+  containerTagsIngredient.innerHTML = "";
+  containerTagsAppliance.innerHTML = "";
+  containerTagsUstensil.innerHTML = "";
 
+  // Update cards recipes displays
   algo.searchInRecipes(
     containerRecipes,
     normalizeSearchUser,
     arrayRecipes,
     arrayRecipesFiltered
   );
-  tags.displayTagsLists(
-    arrayRecipesFiltered,
-    containerTagsIngredients,
-    arrayTagsIngredients
-  );
-  tags.displayTagsLists(
-    arrayRecipesFiltered,
-    containerTagsUstensils,
-    arrayTagsUstensils
-  );
-  tags.displayTagsLists(
-    arrayRecipesFiltered,
-    containerTagsAppliances,
-    arrayTagsAppliances
-  );
+  // Update tags list displays
+  for (let element of arrayRecipesFiltered) {
+    tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
+    tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
+    tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
+  }
 });
 
 // ------------------------------------------------------------------------------------------- //
