@@ -1,34 +1,32 @@
 import * as mess from "../patterns/message.js";
 
 // ------------------------------------------------------------------------------------------- //
-// --------------------------------------------------------- ALGORITM FOR SEARCH BAR IN NATIVE //
+// ----------------------------------------------------- ALGORITM FOR SEARCH BAR IN FUNCTIONAL //
 // ------------------------------------------------------------------------------------------- //
 
-function searchInRecipes(container, wordSearch, array) {
-  let regexInput = new RegExp(`\\ ${wordSearch}\\ ?`, "gi");
+function searchInRecipes(container, wordsSearched, array) {
   container.innerHTML = "";
-
-  function filterArray(obj) {
-    if (wordSearch.length > 2 && obj.contentTxt.match(regexInput)) {
-      return true;
-    } else if (
-      wordSearch.length > 2 &&
-      obj.contentTxt.substring(0, wordSearch.length) == wordSearch
-    ) {
-      return true;
-    } else if (wordSearch.length < 3) {
-      return true;
-    } else {
-      return false;
+  // Callback functions
+  function filterRecipes(obj) {
+    function testEachSearchWord(item) {
+      let regexInput = new RegExp(`${item}\\ ?`, "gi");
+      return (
+        (wordsSearched[0].length > 2 && obj.contentTxt.match(regexInput)) ||
+        wordsSearched[0].length < 3
+      );
     }
+    return wordsSearched.every(testEachSearchWord);
   }
-  let arrayFiltered = array.filter(filterArray);
+
+  let arrayFiltered = array.filter(filterRecipes);
+
   if (arrayFiltered.length == 0) {
     container.appendChild(mess.messageNoFound());
   }
-  arrayFiltered.forEach((elFilt) => {
-    container.appendChild(elFilt.li);
+  arrayFiltered.forEach((element) => {
+    container.appendChild(element.li);
   });
+
   return arrayFiltered;
 }
 

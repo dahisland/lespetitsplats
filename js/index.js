@@ -104,19 +104,23 @@ for (let element of arrayRecipes) {
 
 searchInput.addEventListener("input", (e) => {
   let searchUser = e.target.value;
-  let normalizeSearchUser = norm.getNormalizeText(searchUser);
+  let normalizeSearchUser = norm.getNormalizeText(searchUser).trim();
+  // Create array containing each word searched by user (test)
+  let regexWord = /([a-z]{0,}\ ?)/g;
+  let wordsSearchedArray = normalizeSearchUser.match(regexWord);
+  // end test
+
   containerTagsIngredient.innerHTML = "";
   containerTagsAppliance.innerHTML = "";
   containerTagsUstensil.innerHTML = "";
 
   // Update cards recipes displays
-
   let arrayRecipesFiltered = algo.searchInRecipes(
     containerRecipes,
-    normalizeSearchUser,
+    wordsSearchedArray,
     arrayRecipes
   );
-  algo.searchInRecipes(containerRecipes, normalizeSearchUser, arrayRecipes);
+  algo.searchInRecipes(containerRecipes, wordsSearchedArray, arrayRecipes);
 
   // Update tags list displays
   arrayRecipesFiltered.forEach((element) => {
