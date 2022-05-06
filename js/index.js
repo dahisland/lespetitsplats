@@ -116,7 +116,7 @@ searchInput.addEventListener("input", (e) => {
   let searchUser = e.target.value;
   let normalizeSearchUser = norm.getNormalizeText(searchUser).trim();
   // Create array containing each word searched by user (test)
-  let regexWord = /([a-z]{0,}\ ?)/g;
+  let regexWord = /([0-9a-z]{0,}\ ?)/g;
   let wordsSearchedArray = normalizeSearchUser.match(regexWord);
   // end test
 
@@ -138,6 +138,20 @@ searchInput.addEventListener("input", (e) => {
     tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
     tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
   });
+
+  // Test anim tags selected
+  // for (let item of tagsSelectedContainer.children) {
+  //   let tagSelected = norm.getNormalizeText(item.textContent);
+  //   let tagListFiltered = norm.getNormalizeText(
+  //     containerTagsIngredient.textContent
+  //   );
+  //   if (tagListFiltered.includes(tagSelected) == false) {
+  //     item.remove();
+  //   }
+  //   const allTagsSelected = document.querySelectorAll(
+  //     ".selectedTags_item--checked"
+  //   );
+  // }
 });
 
 // ------------------------------------------------------------------------------------------- //

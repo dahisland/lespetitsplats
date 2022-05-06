@@ -83,7 +83,13 @@ class recipe {
       li: container,
       tags: [],
       contentTxt: norm.getNormalizeText(
-        this.name + " " + ingredientsByRecipeArr + " " + this.description
+        this.name +
+          " " +
+          this.time +
+          "min " +
+          ingredientsByRecipeArr +
+          " " +
+          this.description
       ),
     };
 
