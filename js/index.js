@@ -18,6 +18,7 @@ const containerTagsAppliance = ulTagsList[1];
 const containerTagsUstensil = ulTagsList[2];
 const searchInput = document.querySelector(".searchBar_input");
 const containerRecipes = document.querySelector(".main_recipesList");
+const form = document.querySelector("form");
 
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------ ARRAYS //
@@ -98,6 +99,14 @@ for (let element of arrayRecipes) {
     tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
   }
 }
+
+// ------------------------------------------------------------------------------------------- //
+// ----------------------------------------------------------- PREVENT DEFAULT SUBMIT FOR FORM //
+// ------------------------------------------------------------------------------------------- //
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
 
 // ------------------------------------------------------------------------------------------- //
 // ---------------------------------------------------- CALL NATIVE SEARCH ALGO ON EVENT INPUT //
