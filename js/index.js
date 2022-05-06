@@ -114,7 +114,7 @@ form.addEventListener("submit", (e) => {
 
 searchInput.addEventListener("input", (e) => {
   let searchUser = e.target.value;
-  let regexWord = /([a-z]{0,}\ ?)/g;
+  let regexWord = /([0-9a-z]{0,}\ ?)/g;
 
   // -------------------------------------- Create array containing each word searched by user //
 
