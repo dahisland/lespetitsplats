@@ -85,6 +85,7 @@ class recipe {
       contentTxt: norm.getNormalizeText(
         this.name + " " + ingredientsByRecipeArr + " " + this.description
       ),
+      testMatchSearch: [],
     };
 
     for (let i = 0; i < this.ingredients.length; i++) {

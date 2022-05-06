@@ -3,28 +3,35 @@ import * as mess from "../patterns/message.js";
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------- ALGORITM FOR SEARCH BAR IN NATIVE //
 // ------------------------------------------------------------------------------------------- //
-
-function searchInRecipes(container, wordSearch, array, arrayFiltered) {
-  let regexInput = new RegExp(`\\ ${wordSearch}\\ ?`, "gi");
-  container.innerHTML = "";
-  arrayFiltered.length = 0;
-  for (let el of array) {
-    if (wordSearch.length > 2 && el.contentTxt.match(regexInput)) {
-      arrayFiltered.push(el);
-    } else if (
-      wordSearch.length > 2 &&
-      el.contentTxt.substring(0, wordSearch.length) == wordSearch
-    ) {
-      arrayFiltered.push(el);
-    } else if (wordSearch.length < 3) {
-      arrayFiltered.push(el);
+function testWordSearched(obj, arrSearch, arrTest) {
+  for (let item of arrSearch) {
+    let regexInput = new RegExp(`${item}\\ ?`, "gi");
+    if (arrSearch[0].length > 2 && !obj.contentTxt.match(regexInput)) {
+      arrTest.push(1);
+    } else {
+      arrTest.push(0);
     }
   }
+}
+
+function searchInRecipes(container, wordsSearched, array, arrayFiltered) {
+  container.innerHTML = "";
+  arrayFiltered.length = 0;
+
+  for (let obj of array) {
+    let arrayTestSearchMatch = obj.testMatchSearch;
+    arrayTestSearchMatch.length = 0;
+    testWordSearched(obj, wordsSearched, arrayTestSearchMatch);
+    if (arrayTestSearchMatch.includes(1) == false) {
+      arrayFiltered.push(obj);
+    }
+  }
+
   if (arrayFiltered.length == 0) {
     container.appendChild(mess.messageNoFound());
   }
-  for (let elFilt of arrayFiltered) {
-    container.appendChild(elFilt.li);
+  for (let obj of arrayFiltered) {
+    container.appendChild(obj.li);
   }
 }
 
