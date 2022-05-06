@@ -63,7 +63,6 @@ form {
     right: 0.9rem;
     height: 60px;
     font-size: 1.5rem;
-    cursor: pointer;
   }
   @include utils.responsive(tabs) {
     font-size: 0.8rem;
