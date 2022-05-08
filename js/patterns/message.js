@@ -1,4 +1,4 @@
-function messageNoFound() {
+function messageNoMatch() {
   const containerMessage = document.createElement("div");
   containerMessage.classList.add("main_noMatchMessage");
   const message = document.createElement("p");
@@ -9,4 +9,4 @@ function messageNoFound() {
   return containerMessage;
 }
 
-export { messageNoFound };
+export { messageNoMatch };

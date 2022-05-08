@@ -22,7 +22,7 @@ function searchInRecipes(container, wordsSearched, array) {
   let arrayFiltered = array.filter(filterRecipes);
 
   if (arrayFiltered.length == 0) {
-    container.appendChild(mess.messageNoFound());
+    container.appendChild(mess.messageNoMatch());
   }
   arrayFiltered.forEach((element) => {
     container.appendChild(element.li);
