@@ -186,7 +186,6 @@ allTags.forEach((tag) => {
         delete arrayTagsSelected[
           arrayTagsSelected.indexOf(norm.getNormalizeText(tag.textContent))
         ];
-        console.log(arrayTagsSelected);
 
         const filterRecipes = (obj) => {
           const testEachSearchWord = (item) => {
@@ -234,12 +233,12 @@ searchInput.addEventListener("input", (e) => {
   // Update cards recipes displays
 
   algo.searchInRecipes(containerRecipes, wordsSearchedArray, arrayRecipes);
+
   arrayRecipesFiltered = algo.searchInRecipes(
     containerRecipes,
     wordsSearchedArray,
     arrayRecipes
   );
-
   // Update tags list displays
   containerTagsIngredient.innerHTML = "";
   containerTagsAppliance.innerHTML = "";
