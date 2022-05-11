@@ -20,10 +20,10 @@ class tagsListFilter {
 
     if (objTagList.tags.includes(normalizeTagTxt) == false) {
       let elementTagList = document.createElement("li");
+      elementTagList.innerHTML = upperTagTxt;
       elementTagList.classList.add("selectedTags_item--unchecked");
       elementTagList.setAttribute("data-status", "unchecked");
       objTagList.tags.push(normalizeTagTxt);
-      elementTagList.innerHTML = upperTagTxt;
       objTagList.li.push(elementTagList);
     }
   }
@@ -68,20 +68,22 @@ function selectTag(tagSelect, element) {
 }
 
 // function for hide tags unselected in the tags-selected bar
-function unselectTag(element) {
-  let tagsIconClose = document.querySelectorAll(".nav_selectedTags > p > span");
-  tagsIconClose.forEach((iconClose) => {
-    iconClose.addEventListener("click", () => {
-      if (
-        iconClose.parentNode.getAttribute("data-value") == element.innerHTML
-      ) {
-        element.setAttribute("data-status", "unchecked");
-        element.classList.remove("selectedTags_item--checked");
-        element.classList.add("selectedTags_item--unchecked");
-        iconClose.parentNode.style.display = "none";
-      }
-    });
-  });
-}
+// function unselectTag(element) {
+//   let tagsIconClose = document.querySelectorAll(
+//     ".nav_selectedTags > li > span"
+//   );
+//   tagsIconClose.forEach((iconClose) => {
+//     iconClose.addEventListener("click", () => {
+//       if (
+//         iconClose.parentNode.getAttribute("data-value") == element.innerHTML
+//       ) {
+//         element.setAttribute("data-status", "unchecked");
+//         element.classList.remove("selectedTags_item--checked");
+//         element.classList.add("selectedTags_item--unchecked");
+//         iconClose.parentNode.remove();
+//       }
+//     });
+//   });
+// }
 
-export { tagsListFilter, displayTagsLists, selectTag, unselectTag };
+export { tagsListFilter, displayTagsLists, selectTag };

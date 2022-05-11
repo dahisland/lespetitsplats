@@ -4,6 +4,7 @@ import * as card from "./patterns/cards.js";
 import * as tags from "./patterns/tagsList.js";
 import * as algo from "./algos/functionalAlgo.js";
 import * as norm from "./utils/normalizeTxt.js";
+import * as mess from "./patterns/message.js";
 
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------------------------------- VARIABLES //
@@ -27,6 +28,7 @@ const form = document.querySelector("form");
 // ----------------------------------------------------- Containers recipes & recipes filtered //
 
 let arrayRecipes = [];
+let arrayRecipesFiltered = [];
 
 // ------------------------------------------------------------------------------------------- //
 // ----------------------------------------------------------------------------------- OBJECTS //
@@ -109,6 +111,115 @@ form.addEventListener("submit", (e) => {
 });
 
 // ------------------------------------------------------------------------------------------- //
+// ---------------------------------------------------------- STYLE & EVENTS FOR TAGS SELECTED //
+// ------------------------------------------------------------------------------------------- //
+
+const tagsSelectedContainer = document.querySelector(".nav_selectedTags");
+let allTags = document.querySelectorAll(".selectedTags_item--unchecked");
+let arrayTagsSelected = [];
+
+function filterRecipeByTag() {
+  const filterRecipes = (obj) => {
+    const testEachSearchWord = (item) => {
+      return obj.tags.includes(item) == true;
+    };
+    return arrayTagsSelected.every(testEachSearchWord);
+  };
+
+  if (arrayRecipesFiltered.length == 0) {
+    containerRecipes.innerHTML = "";
+    arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
+    arrayRecipesFiltered.forEach((arr) => {
+      containerRecipes.appendChild(arr.li);
+    });
+  } else {
+    containerRecipes.innerHTML = "";
+    arrayRecipesFiltered = arrayRecipesFiltered.filter(filterRecipes);
+    arrayRecipesFiltered.forEach((arr) => {
+      containerRecipes.appendChild(arr.li);
+    });
+  }
+  return arrayRecipesFiltered;
+}
+
+allTags.forEach((tag) => {
+  tag.addEventListener("click", () => {
+    let containerTagSelected = document.createElement("li");
+    if (tag.getAttribute("data-status") == "unchecked") {
+      arrayTagsSelected.push(norm.getNormalizeText(tag.textContent));
+      tags.selectTag(containerTagSelected, tag);
+      tagsSelectedContainer.appendChild(containerTagSelected);
+    }
+
+    // filtre des tags
+    filterRecipeByTag();
+
+    // Update tags list displays
+    containerTagsIngredient.innerHTML = "";
+    containerTagsAppliance.innerHTML = "";
+    containerTagsUstensil.innerHTML = "";
+
+    arrayRecipesFiltered.forEach((element) => {
+      tags.displayTagsLists(
+        element,
+        containerTagsIngredient,
+        objTagsIngredient
+      );
+      tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
+      tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
+    });
+
+    //
+    let allIconsClose = document.querySelectorAll(
+      ".nav_selectedTags > li > span"
+    );
+
+    allIconsClose.forEach((icon) => {
+      icon.addEventListener("click", () => {
+        if (icon.parentNode.getAttribute("data-value") == tag.textContent) {
+          tag.setAttribute("data-status", "unchecked");
+          tag.classList.remove("selectedTags_item--checked");
+          tag.classList.add("selectedTags_item--unchecked");
+        }
+        icon.parentNode.remove();
+
+        delete arrayTagsSelected[
+          arrayTagsSelected.indexOf(norm.getNormalizeText(tag.textContent))
+        ];
+        console.log(arrayTagsSelected);
+
+        const filterRecipes = (obj) => {
+          const testEachSearchWord = (item) => {
+            return obj.tags.includes(item) == true;
+          };
+          return arrayTagsSelected.every(testEachSearchWord);
+        };
+        containerRecipes.innerHTML = "";
+        arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
+        arrayRecipesFiltered.forEach((arr) => {
+          containerRecipes.appendChild(arr.li);
+        });
+      });
+    });
+
+    // Update tags list displays
+    //   containerTagsIngredient.innerHTML = "";
+    //   containerTagsAppliance.innerHTML = "";
+    //   containerTagsUstensil.innerHTML = "";
+
+    //   arrayRecipesFiltered.forEach((element) => {
+    //     tags.displayTagsLists(
+    //       element,
+    //       containerTagsIngredient,
+    //       objTagsIngredient
+    //     );
+    //     tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
+    //     tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
+    //   });
+  });
+});
+
+// ------------------------------------------------------------------------------------------- //
 // ---------------------------------------------------- CALL NATIVE SEARCH ALGO ON EVENT INPUT //
 // ------------------------------------------------------------------------------------------- //
 
@@ -120,54 +231,27 @@ searchInput.addEventListener("input", (e) => {
   let wordsSearchedArray = normalizeSearchUser.match(regexWord);
   // end test
 
-  containerTagsIngredient.innerHTML = "";
-  containerTagsAppliance.innerHTML = "";
-  containerTagsUstensil.innerHTML = "";
-
   // Update cards recipes displays
-  let arrayRecipesFiltered = algo.searchInRecipes(
+
+  algo.searchInRecipes(containerRecipes, wordsSearchedArray, arrayRecipes);
+  arrayRecipesFiltered = algo.searchInRecipes(
     containerRecipes,
     wordsSearchedArray,
     arrayRecipes
   );
-  algo.searchInRecipes(containerRecipes, wordsSearchedArray, arrayRecipes);
 
   // Update tags list displays
+  containerTagsIngredient.innerHTML = "";
+  containerTagsAppliance.innerHTML = "";
+  containerTagsUstensil.innerHTML = "";
+
   arrayRecipesFiltered.forEach((element) => {
     tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
     tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
     tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
   });
-
-  // Test anim tags selected
-  // for (let item of tagsSelectedContainer.children) {
-  //   let tagSelected = norm.getNormalizeText(item.textContent);
-  //   let tagListFiltered = norm.getNormalizeText(
-  //     containerTagsIngredient.textContent
-  //   );
-  //   if (tagListFiltered.includes(tagSelected) == false) {
-  //     item.remove();
-  //   }
-  //   const allTagsSelected = document.querySelectorAll(
-  //     ".selectedTags_item--checked"
-  //   );
-  // }
 });
 
 // ------------------------------------------------------------------------------------------- //
-// ---------------------------------------------------------- STYLE & EVENTS FOR TAGS SELECTED //
+// ------------------------------------------------------------------------------- SEARCH TAGS //
 // ------------------------------------------------------------------------------------------- //
-
-const tagsSelectedContainer = document.querySelector(".nav_selectedTags");
-const allTags = document.querySelectorAll(".selectedTags_item--unchecked");
-
-allTags.forEach((tag) => {
-  tag.addEventListener("click", () => {
-    let containerTagSelected = document.createElement("p");
-    if (tag.getAttribute("data-status") == "unchecked") {
-      tags.selectTag(containerTagSelected, tag);
-      tagsSelectedContainer.appendChild(containerTagSelected);
-    }
-    tags.unselectTag(tag);
-  });
-});

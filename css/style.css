@@ -385,7 +385,7 @@ ul.nav_selectedTags {
   flex-wrap: wrap;
   margin-bottom: 0.4rem;
 }
-ul.nav_selectedTags p {
+ul.nav_selectedTags li {
   display: block;
   margin: 0;
   margin-right: 0.4rem;
@@ -397,7 +397,7 @@ ul.nav_selectedTags p {
   outline: none;
   border-radius: 0.3rem;
 }
-ul.nav_selectedTags p span {
+ul.nav_selectedTags li span {
   margin-left: 0.5rem;
   cursor: pointer;
 }
