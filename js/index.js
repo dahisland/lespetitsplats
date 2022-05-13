@@ -169,11 +169,12 @@ function eventBtnClose(tag) {
       }
       icon.parentNode.remove();
 
-      delete arrayTagsSelected[
-        arrayTagsSelected.indexOf(
-          norm.getNormalizeText(icon.parentNode.textContent)
-        )
-      ];
+      let containerTagsLi = document.querySelectorAll(".nav_selectedTags > li");
+
+      arrayTagsSelected.length = 0;
+      containerTagsLi.forEach((li) => {
+        arrayTagsSelected.push(norm.getNormalizeText(li.textContent));
+      });
 
       const filterRecipes = (obj) => {
         const testEachSearchWord = (item) => {
@@ -253,7 +254,7 @@ function searchBySearchBar() {
     let wordsSearchedArray = normalizeSearchUser.match(regexWord);
 
     // Update cards recipes displays
-    if (arrayTagsSelected[0] == undefined) {
+    if (arrayTagsSelected.length == 0) {
       algo.searchInRecipes(containerRecipes, wordsSearchedArray, arrayRecipes);
       arrayRecipesFiltered = algo.searchInRecipes(
         containerRecipes,
