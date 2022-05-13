@@ -119,12 +119,12 @@ let allTags = document.querySelectorAll(".selectedTags_item--unchecked");
 let arrayTagsSelected = [];
 
 // Update tags list displays
-function updateTagsLists() {
+function updateTagsLists(array) {
   containerTagsIngredient.innerHTML = "";
   containerTagsAppliance.innerHTML = "";
   containerTagsUstensil.innerHTML = "";
 
-  arrayRecipesFiltered.forEach((element) => {
+  array.forEach((element) => {
     tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
     tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
     tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
@@ -208,7 +208,7 @@ function eventBtnClose(tag) {
         });
         arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
       }
-      updateTagsLists();
+      updateTagsLists(arrayRecipesFiltered);
     });
   });
   return arrayRecipesFiltered;
@@ -228,7 +228,7 @@ function searchByTag() {
 
       // Recipes filtered by tags and updating tags lists
       filterRecipeByTag();
-      updateTagsLists();
+      updateTagsLists(arrayRecipesFiltered);
 
       arrayRecipesFiltered = filterRecipeByTag();
 
@@ -261,15 +261,29 @@ function searchBySearchBar() {
         wordsSearchedArray,
         arrayRecipes
       );
-      updateTagsLists();
+      updateTagsLists(arrayRecipesFiltered);
     } else {
-      arrayRecipesFiltered = searchByTag();
+      arrayRecipesFiltered.length = 0;
+      const filterRecipes = (obj) => {
+        const testEachSearchWord = (item) => {
+          return obj.tags.includes(item) == true;
+        };
+        return arrayTagsSelected.every(testEachSearchWord);
+      };
+      arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
+
       algo.searchInRecipes(
         containerRecipes,
         wordsSearchedArray,
         arrayRecipesFiltered
       );
-      updateTagsLists();
+      arrayRecipesFiltered = algo.searchInRecipes(
+        containerRecipes,
+        wordsSearchedArray,
+        arrayRecipesFiltered
+      );
+
+      updateTagsLists(arrayRecipesFiltered);
     }
   });
   return arrayRecipesFiltered;
