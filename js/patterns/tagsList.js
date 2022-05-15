@@ -1,10 +1,6 @@
 import * as norm from "../utils/normalizeTxt.js";
 
 // ------------------------------------------------------------------------------------------- //
-// ----------------------------------------------------------------- ARRAYS FOR EACH TAGS LIST //
-// ------------------------------------------------------------------------------------------- //
-
-// ------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------- GET INITIALS TAGS LISTS //
 // ------------------------------------------------------------------------------------------- //
 
@@ -44,7 +40,68 @@ function displayTagsLists(attr, containerTags, arrayTags) {
 }
 
 // ------------------------------------------------------------------------------------------- //
-// --------------------------------------------------------- DISPLAY/HIDE SELECTED ACTIVE TAGS //
+// -------------------------------------------------------------- DISPLAY SELECTED ACTIVE TAGS //
 // ------------------------------------------------------------------------------------------- //
 
-export { tagsListFilter, displayTagsLists };
+function displayTagsSelected(tagsListTag, containerUl) {
+  let tagChecked = document.createElement("li");
+
+  tagsListTag.classList.remove("selectedTags_item--unchecked");
+  tagsListTag.classList.add("selectedTags_item--checked");
+  tagChecked.innerHTML =
+    tagsListTag.innerHTML +
+    ` <span class="far fa-times-circle icons icons--close"></span>`;
+
+  if (tagsListTag.parentNode.getAttribute("data-name") == "Appareils") {
+    tagChecked.style.background = "#68d9a4";
+  }
+  if (tagsListTag.parentNode.getAttribute("data-name") == "Ingrédients") {
+    tagChecked.style.background = "#3282f7";
+  }
+  if (tagsListTag.parentNode.getAttribute("data-name") == "Ustensiles") {
+    tagChecked.style.background = "#ed6454";
+  }
+
+  containerUl.appendChild(tagChecked);
+}
+
+// ------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------- STYLE TAGLISTS ON FOCUS //
+// ------------------------------------------------------------------------------------------- //
+
+function styleTagsListsOnFocus(
+  containerTagsList,
+  allContainersTagsList,
+  containerUl
+) {
+  const allBtnDown = document.querySelectorAll(".searchTags_btnDown");
+  const allBtnUp = document.querySelectorAll(".searchTags_btnUp");
+  const btnDown = containerTagsList.firstElementChild.nextElementSibling;
+  const btnUp = btnDown.nextElementSibling;
+
+  allBtnDown.forEach((btn) => {
+    btn.style.display = "block";
+  });
+  allBtnUp.forEach((btn) => {
+    btn.style.display = "none";
+  });
+  allContainersTagsList.forEach((cont) => {
+    cont.style.width = "fit-content";
+  });
+  containerUl.forEach((ul) => {
+    ul.style.display = "none";
+  });
+
+  // Anim on focusin
+  containerTagsList.style.width = "60%";
+  containerTagsList.lastElementChild.style.display = "flex";
+  btnDown.style.display = "none";
+  btnUp.style.display = "block";
+}
+
+export {
+  tagsListFilter,
+  displayTagsLists,
+  displayTagsSelected,
+  styleTagsListsOnFocus,
+};

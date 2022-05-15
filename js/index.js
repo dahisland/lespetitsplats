@@ -2,7 +2,8 @@ import * as animNav from "./utils/animNav.js";
 import * as data from "./data/recipes.js";
 import * as card from "./patterns/cards.js";
 import * as tags from "./patterns/tagsList.js";
-import * as algo from "./algos/functionalAlgo.js";
+import * as algoBar from "./algos/algoSearchBar.js";
+import * as algoTag from "./algos/algoByTag.js";
 import * as norm from "./utils/normalizeTxt.js";
 import * as mess from "./patterns/message.js";
 
@@ -121,11 +122,13 @@ form.addEventListener("submit", (e) => {
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------- TEST SEARCH //
 // ------------------------------------------------------------------------------------------- //
-const tagsSelectedContainer = document.querySelector(".nav_selectedTags");
+const tagsSelectedUl = document.querySelector(".nav_selectedTags");
+let tagsSelectedLi = tagsSelectedUl.childNodes;
+const containerSeachTags = document.querySelectorAll(".searchTags_filter");
 
 let allTags = document.querySelectorAll(".selectedTags_item--unchecked");
 let arrayTagsSelected = [];
-let wordsInputSearchBarArray = [];
+let arrayInputSearchBar = [];
 
 // Update tags list displays
 function updateTagsLists(element) {
@@ -133,210 +136,149 @@ function updateTagsLists(element) {
   tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
   tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
 }
-
-// Callback functions
-const filterRecipes = (obj) => {
-  const testEachSearchWord = (item) => {
-    let regexInput = new RegExp(`${item}\\ ?`, "gi");
-    return obj.contentTxt.match(regexInput);
-  };
-  return wordsInputSearchBarArray.every(testEachSearchWord);
-};
-const filterRecipesByTag = (obj) => {
-  const testEachTagWord = (item) => {
-    return obj.tags.includes(item) == true;
-  };
-  return arrayTagsSelected.every(testEachTagWord);
-};
-
-// algo for search bar
-searchInput.addEventListener("input", (e) => {
-  let searchUser = e.target.value;
-  let normalizeSearchUser = norm.getNormalizeText(searchUser).trim();
-  // Create array containing each word searched by user
-  let regexWord = /([0-9a-z]{0,}\ ?)/g;
-  wordsInputSearchBarArray = normalizeSearchUser.match(regexWord);
-
+// Display recipes filtered
+function displayRecipesFiltered(array) {
+  array.forEach((element) => {
+    containerRecipes.appendChild(element.li);
+    updateTagsLists(element);
+  });
+}
+// Reset containers
+function resetContainers() {
   containerTagsIngredient.innerHTML = "";
   containerTagsAppliance.innerHTML = "";
   containerTagsUstensil.innerHTML = "";
   containerRecipes.innerHTML = "";
+}
 
-  if (
-    tagsSelectedContainer.childNodes.length == 0 &&
-    wordsInputSearchBarArray[0].length > 2
-  ) {
-    arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-    if (arrayRecipesFiltered.length != 0) {
-      arrayRecipesFiltered.forEach((element) => {
-        containerRecipes.appendChild(element.li);
-        updateTagsLists(element);
-      });
-    } else {
-      containerRecipes.appendChild(mess.messageNoMatch());
-    }
-  }
-  if (
-    tagsSelectedContainer.childNodes.length == 0 &&
-    wordsInputSearchBarArray[0].length < 3
-  ) {
-    arrayRecipes.forEach((element) => {
-      containerRecipes.appendChild(element.li);
-      updateTagsLists(element);
-    });
-  }
+// ------------------------------------------------------------- Events input for search bar //
+searchInput.addEventListener("input", (e) => {
+  // Create array containing each word searched by user
+  let normalizeSearchUser = norm.getNormalizeText(e.target.value).trim();
+  let regexWord = /([0-9a-z]{0,}\ ?)/g;
+  arrayInputSearchBar = normalizeSearchUser.match(regexWord);
 
-  if (
-    tagsSelectedContainer.childNodes.length != 0 &&
-    wordsInputSearchBarArray[0].length > 2
-  ) {
-    arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-    arrayRecipesFiltered = arrayRecipesFiltered.filter(filterRecipesByTag);
+  resetContainers();
 
-    if (arrayRecipesFiltered.length != 0) {
-      arrayRecipesFiltered.forEach((element) => {
-        containerRecipes.appendChild(element.li);
-        updateTagsLists(element);
-      });
-    } else {
-      containerRecipes.appendChild(mess.messageNoMatch());
-    }
-  }
-  if (
-    tagsSelectedContainer.childNodes.length != 0 &&
-    wordsInputSearchBarArray[0].length < 3
-  ) {
-    arrayRecipesFiltered = arrayRecipes.filter(filterRecipesByTag);
+  let lengthTagSelected = tagsSelectedLi.length;
+  arrayRecipesFiltered = [];
 
-    if (arrayRecipesFiltered.length != 0) {
-      arrayRecipesFiltered.forEach((element) => {
-        containerRecipes.appendChild(element.li);
-        updateTagsLists(element);
-      });
-    } else {
-      containerRecipes.appendChild(mess.messageNoMatch());
+  switch (lengthTagSelected) {
+    case 0:
+      {
+        if (arrayInputSearchBar[0].length > 2) {
+          arrayRecipesFiltered = algoBar.getArrayRecipesBySearchBar(
+            arrayInputSearchBar,
+            arrayRecipes
+          );
+          if (arrayRecipesFiltered.length != 0) {
+            displayRecipesFiltered(arrayRecipesFiltered);
+          } else {
+            containerRecipes.appendChild(mess.messageNoMatch());
+          }
+        }
+        if (arrayInputSearchBar[0].length < 3) {
+          displayRecipesFiltered(arrayRecipes);
+        }
+      }
+      break;
+    default: {
+      if (arrayInputSearchBar[0].length > 2) {
+        arrayRecipesFiltered = algoBar.getArrayRecipesBySearchBar(
+          arrayInputSearchBar,
+          arrayRecipes
+        );
+        arrayRecipesFiltered = algoTag.getArrayRecipesByTags(
+          arrayTagsSelected,
+          arrayRecipesFiltered
+        );
+      } else {
+        arrayRecipesFiltered = algoTag.getArrayRecipesByTags(
+          arrayTagsSelected,
+          arrayRecipes
+        );
+      }
+      if (arrayRecipesFiltered.length != 0) {
+        displayRecipesFiltered(arrayRecipesFiltered);
+      } else {
+        containerRecipes.appendChild(mess.messageNoMatch());
+      }
     }
   }
 });
-// tag search
+
+// ----------------------------------------------------------------- Event on click for tags //
+
+function displayRecipesByTag() {
+  arrayTagsSelected.length = 0;
+  resetContainers();
+
+  // Create array containing each word searched by user
+  let normalizeInputSearchBar = norm.getNormalizeText(searchInput.value).trim();
+  let regexWord = /([0-9a-z]{0,}\ ?)/g;
+  arrayInputSearchBar = normalizeInputSearchBar.match(regexWord);
+  // Create array containing each selected tag textContent
+  tagsSelectedLi.forEach((li) => {
+    let tagNormalizedText = norm.getNormalizeText(li.textContent).trim();
+    arrayTagsSelected.push(tagNormalizedText);
+  });
+
+  if (arrayInputSearchBar[0].length < 3) {
+    arrayRecipesFiltered = algoTag.getArrayRecipesByTags(
+      arrayTagsSelected,
+      arrayRecipes
+    );
+  } else {
+    arrayRecipesFiltered = algoBar.getArrayRecipesBySearchBar(
+      arrayInputSearchBar,
+      arrayRecipes
+    );
+    arrayRecipesFiltered = algoTag.getArrayRecipesByTags(
+      arrayTagsSelected,
+      arrayRecipesFiltered
+    );
+  }
+  if (arrayRecipesFiltered.length != 0) {
+    displayRecipesFiltered(arrayRecipesFiltered);
+  } else {
+    containerRecipes.appendChild(mess.messageNoMatch());
+  }
+}
+
 allTags.forEach((tag) => {
-  tag.addEventListener("click", () => {
-    tag.classList.remove("selectedTags_item--unchecked");
-    tag.classList.add("selectedTags_item--checked");
-    let tagSelected = document.createElement("li");
-    tagSelected.innerHTML =
-      tag.innerHTML +
-      ` <span class="far fa-times-circle icons icons--close"></span>`;
-    if (tag.parentNode.getAttribute("data-name") == "Appareils") {
-      tagSelected.style.background = "#68d9a4";
+  tag.addEventListener("click", (e) => {
+    //display tags selected in the tags selected bar
+    if (tag.classList == "selectedTags_item--unchecked") {
+      tags.displayTagsSelected(tag, tagsSelectedUl);
     }
-    if (tag.parentNode.getAttribute("data-name") == "Ingrédients") {
-      tagSelected.style.background = "#3282f7";
-    }
-    if (tag.parentNode.getAttribute("data-name") == "Ustensiles") {
-      tagSelected.style.background = "#ed6454";
-    }
-
-    tagsSelectedContainer.appendChild(tagSelected);
-
-    function displayRecipesByTag() {
-      arrayTagsSelected.length = 0;
-      containerTagsIngredient.innerHTML = "";
-      containerTagsAppliance.innerHTML = "";
-      containerTagsUstensil.innerHTML = "";
-      containerRecipes.innerHTML = "";
-
-      tagsSelectedContainer.childNodes.forEach((tagSelected) => {
-        let tagNormalizedText = norm
-          .getNormalizeText(tagSelected.textContent)
-          .trim();
-        arrayTagsSelected.push(tagNormalizedText);
-      });
-
-      let normalizeInputSearchBar = norm
-        .getNormalizeText(searchInput.value)
-        .trim();
-      // Create array containing each word searched by user
-      let regexWord = /([0-9a-z]{0,}\ ?)/g;
-      wordsInputSearchBarArray = normalizeInputSearchBar.match(regexWord);
-
-      if (wordsInputSearchBarArray[0].length < 3) {
-        arrayRecipesFiltered = arrayRecipes.filter(filterRecipesByTag);
-        if (arrayRecipesFiltered.length != 0) {
-          arrayRecipesFiltered.forEach((element) => {
-            containerRecipes.appendChild(element.li);
-            updateTagsLists(element);
-          });
-        } else {
-          containerRecipes.appendChild(mess.messageNoMatch());
-        }
-      }
-      if (wordsInputSearchBarArray[0].length > 2) {
-        arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-        arrayRecipesFiltered = arrayRecipesFiltered.filter(filterRecipesByTag);
-        if (arrayRecipesFiltered.length != 0) {
-          arrayRecipesFiltered.forEach((element) => {
-            containerRecipes.appendChild(element.li);
-            updateTagsLists(element);
-          });
-        } else {
-          containerRecipes.appendChild(mess.messageNoMatch());
-        }
-      }
-    }
-
+    // Updating recipes displays
     displayRecipesByTag();
 
     let allIconSpan = document.querySelectorAll(
       ".nav_selectedTags > li > span"
     );
-
+    // Add event for buttons close for tags selected in the tags selected bar
     allIconSpan.forEach((icon) => {
       icon.addEventListener("click", () => {
         tag.classList.remove("selectedTags_item--checked");
         tag.classList.add("selectedTags_item--unchecked");
-
         icon.parentNode.remove();
+        // Updating recipes displays
         displayRecipesByTag();
       });
     });
   });
 });
 
-const containerSeachTags = document.querySelectorAll(".searchTags_filter");
+// ---------------------------------------  Events for update tagslists using input for tags //
+
 containerSeachTags.forEach((container) => {
   let arrayLiTagsLists = [];
   arrayLiTagsLists.length = 0;
   let tagsFromTagList = container.lastElementChild.childNodes;
-
-  container.addEventListener("focusin", () => {
-    //reset
-    const allBtnDown = document.querySelectorAll(".searchTags_btnDown");
-    const allBtnUp = document.querySelectorAll(".searchTags_btnUp");
-    const btnDown = container.firstElementChild.nextElementSibling;
-    const btnUp = btnDown.nextElementSibling;
-
-    allBtnDown.forEach((btn) => {
-      btn.style.display = "block";
-    });
-    allBtnUp.forEach((btn) => {
-      btn.style.display = "none";
-    });
-    containerSeachTags.forEach((cont) => {
-      cont.style.width = "fit-content";
-    });
-    ulTagsList.forEach((ul) => {
-      ul.style.display = "none";
-    });
-
-    // Anim on focusin
-    container.style.width = "60%";
-    container.lastElementChild.style.display = "flex";
-    btnDown.style.display = "none";
-    btnUp.style.display = "block";
-  });
-
   let input = container.firstElementChild;
+
+  // Events on focus
   input.addEventListener("focusin", () => {
     input.value = "";
     tagsFromTagList = container.lastElementChild.childNodes;
@@ -344,26 +286,25 @@ containerSeachTags.forEach((container) => {
     tagsFromTagList.forEach((li) => {
       arrayLiTagsLists.push(li);
     });
+    tags.styleTagsListsOnFocus(container, containerSeachTags, ulTagsList);
   });
 
   input.addEventListener("focusout", () => {
     input.value = input.getAttribute("data-value");
   });
 
+  // Events on input
   input.addEventListener("input", (e) => {
     e.preventDefault();
     let tagValueNormalized = norm.getNormalizeText(e.target.value).trim();
     let regexInput = new RegExp(`${tagValueNormalized}\\ ?`, "gi");
+    let arrayTagsFiltered = [];
 
-    const matchTag = (obj) => {
-      return norm.getNormalizeText(obj.textContent).trim().match(regexInput);
-    };
-    let arrayFiltered = arrayLiTagsLists.filter(matchTag);
-    console.log(arrayFiltered);
+    arrayTagsFiltered = algoTag.getArrayTags(arrayLiTagsLists, regexInput);
 
     container.lastElementChild.innerHTML = "";
-    if (arrayFiltered.length != 0) {
-      arrayFiltered.forEach((li) => {
+    if (arrayTagsFiltered.length != 0) {
+      arrayTagsFiltered.forEach((li) => {
         container.lastElementChild.appendChild(li);
       });
     } else {
