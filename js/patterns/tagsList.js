@@ -22,7 +22,6 @@ class tagsListFilter {
       let elementTagList = document.createElement("li");
       elementTagList.innerHTML = upperTagTxt;
       elementTagList.classList.add("selectedTags_item--unchecked");
-      elementTagList.setAttribute("data-status", "unchecked");
       objTagList.tags.push(normalizeTagTxt);
       objTagList.li.push(elementTagList);
     }
@@ -35,8 +34,9 @@ function displayTagsLists(attr, containerTags, arrayTags) {
   let normalizeRecipeTxt = attr.tags;
   for (let item of arrayTags.li) {
     if (
-      normalizeRecipeTxt.includes(norm.getNormalizeText(item.textContent)) ==
-      true
+      normalizeRecipeTxt.includes(
+        norm.getNormalizeText(item.textContent).trim()
+      ) == true
     ) {
       containerTags.appendChild(item);
     }
@@ -53,7 +53,6 @@ function selectTag(tagSelect, element) {
     element.innerHTML +
     '<span class="far fa-times-circle icons icons--close"></span>';
   tagSelect.setAttribute("data-value", element.innerHTML);
-  element.setAttribute("data-status", "checked");
   element.classList.remove("selectedTags_item--unchecked");
   element.classList.add("selectedTags_item--checked");
   if (element.parentNode.getAttribute("data-name") == "Appareils") {
