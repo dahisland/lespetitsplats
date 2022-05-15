@@ -47,42 +47,4 @@ function displayTagsLists(attr, containerTags, arrayTags) {
 // --------------------------------------------------------- DISPLAY/HIDE SELECTED ACTIVE TAGS //
 // ------------------------------------------------------------------------------------------- //
 
-// Function for display tags selected in the tags-selected bar
-function selectTag(tagSelect, element) {
-  tagSelect.innerHTML =
-    element.innerHTML +
-    '<span class="far fa-times-circle icons icons--close"></span>';
-  tagSelect.setAttribute("data-value", element.innerHTML);
-  element.classList.remove("selectedTags_item--unchecked");
-  element.classList.add("selectedTags_item--checked");
-  if (element.parentNode.getAttribute("data-name") == "Appareils") {
-    tagSelect.style.background = "#68d9a4";
-  }
-  if (element.parentNode.getAttribute("data-name") == "Ingrédients") {
-    tagSelect.style.background = "#3282f7";
-  }
-  if (element.parentNode.getAttribute("data-name") == "Ustensiles") {
-    tagSelect.style.background = "#ed6454";
-  }
-}
-
-// function for hide tags unselected in the tags-selected bar
-// function unselectTag(element) {
-//   let tagsIconClose = document.querySelectorAll(
-//     ".nav_selectedTags > li > span"
-//   );
-//   tagsIconClose.forEach((iconClose) => {
-//     iconClose.addEventListener("click", () => {
-//       if (
-//         iconClose.parentNode.getAttribute("data-value") == element.innerHTML
-//       ) {
-//         element.setAttribute("data-status", "unchecked");
-//         element.classList.remove("selectedTags_item--checked");
-//         element.classList.add("selectedTags_item--unchecked");
-//         iconClose.parentNode.remove();
-//       }
-//     });
-//   });
-// }
-
-export { tagsListFilter, displayTagsLists, selectTag };
+export { tagsListFilter, displayTagsLists };

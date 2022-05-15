@@ -114,174 +114,18 @@ form.addEventListener("submit", (e) => {
 // ---------------------------------------------------------- STYLE & EVENTS FOR TAGS SELECTED //
 // ------------------------------------------------------------------------------------------- //
 
-function filterRecipeByTag() {
-  const filterRecipes = (obj) => {
-    const testEachSearchWord = (item) => {
-      return obj.tags.includes(item) == true;
-    };
-    return arrayTagsSelected.every(testEachSearchWord);
-  };
-
-  if (arrayRecipesFiltered.length == 0) {
-    containerRecipes.innerHTML = "";
-    arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-    arrayRecipesFiltered.forEach((arr) => {
-      containerRecipes.appendChild(arr.li);
-    });
-  } else {
-    containerRecipes.innerHTML = "";
-    arrayRecipesFiltered = arrayRecipesFiltered.filter(filterRecipes);
-    arrayRecipesFiltered.forEach((arr) => {
-      containerRecipes.appendChild(arr.li);
-    });
-  }
-  return arrayRecipesFiltered;
-}
-
-function eventBtnClose(tag) {
-  let allIconsClose = document.querySelectorAll(
-    ".nav_selectedTags > li > span"
-  );
-
-  allIconsClose.forEach((icon) => {
-    icon.addEventListener("click", () => {
-      if (icon.parentNode.getAttribute("data-value") == tag.textContent) {
-        tag.setAttribute("data-status", "unchecked");
-        tag.classList.remove("selectedTags_item--checked");
-        tag.classList.add("selectedTags_item--unchecked");
-      }
-      icon.parentNode.remove();
-
-      let containerTagsLi = document.querySelectorAll(".nav_selectedTags > li");
-
-      arrayTagsSelected.length = 0;
-      containerTagsLi.forEach((li) => {
-        arrayTagsSelected.push(norm.getNormalizeText(li.textContent));
-      });
-
-      const filterRecipes = (obj) => {
-        const testEachSearchWord = (item) => {
-          return obj.tags.includes(item) == true;
-        };
-        return arrayTagsSelected.every(testEachSearchWord);
-      };
-      containerRecipes.innerHTML = "";
-      arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-
-      if (searchInput.value.length > 2) {
-        let normalizeSearchUser = norm
-          .getNormalizeText(searchInput.value)
-          .trim();
-        let regexWord = /([0-9a-z]{0,}\ ?)/g;
-        let wordsSearchedArray = normalizeSearchUser.match(regexWord);
-
-        algo.searchInRecipes(
-          containerRecipes,
-          wordsSearchedArray,
-          arrayRecipesFiltered
-        );
-        arrayRecipesFiltered = algo.searchInRecipes(
-          containerRecipes,
-          wordsSearchedArray,
-          arrayRecipesFiltered
-        );
-      } else {
-        arrayRecipesFiltered.forEach((arr) => {
-          containerRecipes.appendChild(arr.li);
-        });
-        arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-      }
-      updateTagsLists(arrayRecipesFiltered);
-    });
-  });
-  return arrayRecipesFiltered;
-}
-
-function searchByTag() {
-  allTags.forEach((tag) => {
-    tag.addEventListener("click", () => {
-      let containerTagSelected = document.createElement("li");
-
-      // Style for tags selected
-      if (tag.getAttribute("data-status") == "unchecked") {
-        arrayTagsSelected.push(norm.getNormalizeText(tag.textContent));
-        tags.selectTag(containerTagSelected, tag);
-        tagsSelectedContainer.appendChild(containerTagSelected);
-      }
-
-      // Recipes filtered by tags and updating tags lists
-      filterRecipeByTag();
-      updateTagsLists(arrayRecipesFiltered);
-
-      arrayRecipesFiltered = filterRecipeByTag();
-
-      // Filtering recipes on click button close tag selected
-      eventBtnClose(tag);
-      arrayRecipesFiltered = eventBtnClose(tag);
-    });
-  });
-  return arrayRecipesFiltered;
-}
-
-// searchByTag(); ------------------------------------------
-
 // ------------------------------------------------------------------------------------------- //
 // ---------------------------------------------------- CALL NATIVE SEARCH ALGO ON EVENT INPUT //
 // ------------------------------------------------------------------------------------------- //
-
-function searchBySearchBar() {
-  searchInput.addEventListener("input", (e) => {
-    let searchUser = e.target.value;
-    let normalizeSearchUser = norm.getNormalizeText(searchUser).trim();
-    // Create array containing each word searched by user
-    let regexWord = /([0-9a-z]{0,}\ ?)/g;
-    let wordsSearchedArray = normalizeSearchUser.match(regexWord);
-
-    // Update cards recipes displays
-    if (arrayTagsSelected.length == 0) {
-      algo.searchInRecipes(containerRecipes, wordsSearchedArray, arrayRecipes);
-      arrayRecipesFiltered = algo.searchInRecipes(
-        containerRecipes,
-        wordsSearchedArray,
-        arrayRecipes
-      );
-      updateTagsLists(arrayRecipesFiltered);
-    } else {
-      arrayRecipesFiltered.length = 0;
-      const filterRecipes = (obj) => {
-        const testEachSearchWord = (item) => {
-          return obj.tags.includes(item) == true;
-        };
-        return arrayTagsSelected.every(testEachSearchWord);
-      };
-      arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-
-      algo.searchInRecipes(
-        containerRecipes,
-        wordsSearchedArray,
-        arrayRecipesFiltered
-      );
-      arrayRecipesFiltered = algo.searchInRecipes(
-        containerRecipes,
-        wordsSearchedArray,
-        arrayRecipesFiltered
-      );
-
-      updateTagsLists(arrayRecipesFiltered);
-    }
-  });
-  return arrayRecipesFiltered;
-}
-// searchBySearchBar(); -------------------------------------------------
 
 // ------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------- TEST SEARCH //
 // ------------------------------------------------------------------------------------------- //
 const tagsSelectedContainer = document.querySelector(".nav_selectedTags");
-const inputSearchTags = document.querySelectorAll(".searchTags_input");
+
 let allTags = document.querySelectorAll(".selectedTags_item--unchecked");
 let arrayTagsSelected = [];
-let wordsInputSearchedArray = [];
+let wordsInputSearchBarArray = [];
 
 // Update tags list displays
 function updateTagsLists(element) {
@@ -290,247 +134,240 @@ function updateTagsLists(element) {
   tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
 }
 
-function test() {
-  // let allWordsSearchedArray = [];
-  let arrayRecipesFiltered = [];
-
-  // Callback functions
-  const filterRecipes = (obj) => {
-    const testEachSearchWord = (item) => {
-      let regexInput = new RegExp(`${item}\\ ?`, "gi");
-      return obj.contentTxt.match(regexInput);
-    };
-    return wordsInputSearchedArray.every(testEachSearchWord);
+// Callback functions
+const filterRecipes = (obj) => {
+  const testEachSearchWord = (item) => {
+    let regexInput = new RegExp(`${item}\\ ?`, "gi");
+    return obj.contentTxt.match(regexInput);
   };
-  const filterRecipesByTag = (obj) => {
-    const testEachTagWord = (item) => {
-      return obj.tags.includes(item) == true;
-    };
-    return arrayTagsSelected.every(testEachTagWord);
+  return wordsInputSearchBarArray.every(testEachSearchWord);
+};
+const filterRecipesByTag = (obj) => {
+  const testEachTagWord = (item) => {
+    return obj.tags.includes(item) == true;
   };
+  return arrayTagsSelected.every(testEachTagWord);
+};
 
-  // algo
-  searchInput.addEventListener("input", (e) => {
-    let searchUser = e.target.value;
-    let normalizeSearchUser = norm.getNormalizeText(searchUser).trim();
-    // Create array containing each word searched by user
-    let regexWord = /([0-9a-z]{0,}\ ?)/g;
-    wordsInputSearchedArray = normalizeSearchUser.match(regexWord);
+// algo for search bar
+searchInput.addEventListener("input", (e) => {
+  let searchUser = e.target.value;
+  let normalizeSearchUser = norm.getNormalizeText(searchUser).trim();
+  // Create array containing each word searched by user
+  let regexWord = /([0-9a-z]{0,}\ ?)/g;
+  wordsInputSearchBarArray = normalizeSearchUser.match(regexWord);
 
-    containerTagsIngredient.innerHTML = "";
-    containerTagsAppliance.innerHTML = "";
-    containerTagsUstensil.innerHTML = "";
-    containerRecipes.innerHTML = "";
+  containerTagsIngredient.innerHTML = "";
+  containerTagsAppliance.innerHTML = "";
+  containerTagsUstensil.innerHTML = "";
+  containerRecipes.innerHTML = "";
 
-    if (
-      tagsSelectedContainer.childNodes.length == 0 &&
-      wordsInputSearchedArray[0].length > 2
-    ) {
-      arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-      if (arrayRecipesFiltered.length != 0) {
-        arrayRecipesFiltered.forEach((element) => {
-          containerRecipes.appendChild(element.li);
-          updateTagsLists(element);
-        });
-      } else {
-        containerRecipes.appendChild(mess.messageNoMatch());
-      }
-    }
-    if (
-      tagsSelectedContainer.childNodes.length == 0 &&
-      wordsInputSearchedArray[0].length < 3
-    ) {
-      arrayRecipes.forEach((element) => {
+  if (
+    tagsSelectedContainer.childNodes.length == 0 &&
+    wordsInputSearchBarArray[0].length > 2
+  ) {
+    arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
+    if (arrayRecipesFiltered.length != 0) {
+      arrayRecipesFiltered.forEach((element) => {
         containerRecipes.appendChild(element.li);
         updateTagsLists(element);
       });
+    } else {
+      containerRecipes.appendChild(mess.messageNoMatch());
+    }
+  }
+  if (
+    tagsSelectedContainer.childNodes.length == 0 &&
+    wordsInputSearchBarArray[0].length < 3
+  ) {
+    arrayRecipes.forEach((element) => {
+      containerRecipes.appendChild(element.li);
+      updateTagsLists(element);
+    });
+  }
+
+  if (
+    tagsSelectedContainer.childNodes.length != 0 &&
+    wordsInputSearchBarArray[0].length > 2
+  ) {
+    arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
+    arrayRecipesFiltered = arrayRecipesFiltered.filter(filterRecipesByTag);
+
+    if (arrayRecipesFiltered.length != 0) {
+      arrayRecipesFiltered.forEach((element) => {
+        containerRecipes.appendChild(element.li);
+        updateTagsLists(element);
+      });
+    } else {
+      containerRecipes.appendChild(mess.messageNoMatch());
+    }
+  }
+  if (
+    tagsSelectedContainer.childNodes.length != 0 &&
+    wordsInputSearchBarArray[0].length < 3
+  ) {
+    arrayRecipesFiltered = arrayRecipes.filter(filterRecipesByTag);
+
+    if (arrayRecipesFiltered.length != 0) {
+      arrayRecipesFiltered.forEach((element) => {
+        containerRecipes.appendChild(element.li);
+        updateTagsLists(element);
+      });
+    } else {
+      containerRecipes.appendChild(mess.messageNoMatch());
+    }
+  }
+});
+// tag search
+allTags.forEach((tag) => {
+  tag.addEventListener("click", () => {
+    tag.classList.remove("selectedTags_item--unchecked");
+    tag.classList.add("selectedTags_item--checked");
+    let tagSelected = document.createElement("li");
+    tagSelected.innerHTML =
+      tag.innerHTML +
+      ` <span class="far fa-times-circle icons icons--close"></span>`;
+    if (tag.parentNode.getAttribute("data-name") == "Appareils") {
+      tagSelected.style.background = "#68d9a4";
+    }
+    if (tag.parentNode.getAttribute("data-name") == "Ingrédients") {
+      tagSelected.style.background = "#3282f7";
+    }
+    if (tag.parentNode.getAttribute("data-name") == "Ustensiles") {
+      tagSelected.style.background = "#ed6454";
     }
 
-    if (
-      tagsSelectedContainer.childNodes.length != 0 &&
-      wordsInputSearchedArray[0].length > 2
-    ) {
-      arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-      arrayRecipesFiltered = arrayRecipesFiltered.filter(filterRecipesByTag);
+    tagsSelectedContainer.appendChild(tagSelected);
 
-      if (arrayRecipesFiltered.length != 0) {
-        arrayRecipesFiltered.forEach((element) => {
-          containerRecipes.appendChild(element.li);
-          updateTagsLists(element);
-        });
-      } else {
-        containerRecipes.appendChild(mess.messageNoMatch());
-      }
-    }
-    if (
-      tagsSelectedContainer.childNodes.length != 0 &&
-      wordsInputSearchedArray[0].length < 3
-    ) {
-      arrayRecipesFiltered = arrayRecipes.filter(filterRecipesByTag);
+    function displayRecipesByTag() {
+      arrayTagsSelected.length = 0;
+      containerTagsIngredient.innerHTML = "";
+      containerTagsAppliance.innerHTML = "";
+      containerTagsUstensil.innerHTML = "";
+      containerRecipes.innerHTML = "";
 
-      if (arrayRecipesFiltered.length != 0) {
-        arrayRecipesFiltered.forEach((element) => {
-          containerRecipes.appendChild(element.li);
-          updateTagsLists(element);
-        });
-      } else {
-        containerRecipes.appendChild(mess.messageNoMatch());
-      }
-    }
-  });
-  // tag search
-  allTags.forEach((tag) => {
-    tag.addEventListener("click", () => {
-      tag.classList.remove("selectedTags_item--unchecked");
-      tag.classList.add("selectedTags_item--checked");
-      let tagSelected = document.createElement("li");
-      tagSelected.innerHTML =
-        tag.innerHTML +
-        ` <span class="far fa-times-circle icons icons--close"></span>`;
-      if (tag.parentNode.getAttribute("data-name") == "Appareils") {
-        tagSelected.style.background = "#68d9a4";
-      }
-      if (tag.parentNode.getAttribute("data-name") == "Ingrédients") {
-        tagSelected.style.background = "#3282f7";
-      }
-      if (tag.parentNode.getAttribute("data-name") == "Ustensiles") {
-        tagSelected.style.background = "#ed6454";
-      }
-
-      tagsSelectedContainer.appendChild(tagSelected);
-
-      function displayRecipesByTag() {
-        arrayTagsSelected.length = 0;
-        containerTagsIngredient.innerHTML = "";
-        containerTagsAppliance.innerHTML = "";
-        containerTagsUstensil.innerHTML = "";
-        containerRecipes.innerHTML = "";
-
-        tagsSelectedContainer.childNodes.forEach((tagSelected) => {
-          let tagNormalizedText = norm
-            .getNormalizeText(tagSelected.textContent)
-            .trim();
-          arrayTagsSelected.push(tagNormalizedText);
-        });
-
-        let normalizeInputSearchBar = norm
-          .getNormalizeText(searchInput.value)
+      tagsSelectedContainer.childNodes.forEach((tagSelected) => {
+        let tagNormalizedText = norm
+          .getNormalizeText(tagSelected.textContent)
           .trim();
-        // Create array containing each word searched by user
-        let regexWord = /([0-9a-z]{0,}\ ?)/g;
-        wordsInputSearchedArray = normalizeInputSearchBar.match(regexWord);
+        arrayTagsSelected.push(tagNormalizedText);
+      });
 
-        if (wordsInputSearchedArray[0].length < 3) {
-          arrayRecipesFiltered = arrayRecipes.filter(filterRecipesByTag);
-          if (arrayRecipesFiltered.length != 0) {
-            arrayRecipesFiltered.forEach((element) => {
-              containerRecipes.appendChild(element.li);
-              updateTagsLists(element);
-            });
-          } else {
-            containerRecipes.appendChild(mess.messageNoMatch());
-          }
-        }
-        if (wordsInputSearchedArray[0].length > 2) {
-          arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
-          arrayRecipesFiltered =
-            arrayRecipesFiltered.filter(filterRecipesByTag);
-          if (arrayRecipesFiltered.length != 0) {
-            arrayRecipesFiltered.forEach((element) => {
-              containerRecipes.appendChild(element.li);
-              updateTagsLists(element);
-            });
-          } else {
-            containerRecipes.appendChild(mess.messageNoMatch());
-          }
+      let normalizeInputSearchBar = norm
+        .getNormalizeText(searchInput.value)
+        .trim();
+      // Create array containing each word searched by user
+      let regexWord = /([0-9a-z]{0,}\ ?)/g;
+      wordsInputSearchBarArray = normalizeInputSearchBar.match(regexWord);
+
+      if (wordsInputSearchBarArray[0].length < 3) {
+        arrayRecipesFiltered = arrayRecipes.filter(filterRecipesByTag);
+        if (arrayRecipesFiltered.length != 0) {
+          arrayRecipesFiltered.forEach((element) => {
+            containerRecipes.appendChild(element.li);
+            updateTagsLists(element);
+          });
+        } else {
+          containerRecipes.appendChild(mess.messageNoMatch());
         }
       }
-      displayRecipesByTag();
+      if (wordsInputSearchBarArray[0].length > 2) {
+        arrayRecipesFiltered = arrayRecipes.filter(filterRecipes);
+        arrayRecipesFiltered = arrayRecipesFiltered.filter(filterRecipesByTag);
+        if (arrayRecipesFiltered.length != 0) {
+          arrayRecipesFiltered.forEach((element) => {
+            containerRecipes.appendChild(element.li);
+            updateTagsLists(element);
+          });
+        } else {
+          containerRecipes.appendChild(mess.messageNoMatch());
+        }
+      }
+    }
 
-      let allIconSpan = document.querySelectorAll(
-        ".nav_selectedTags > li > span"
-      );
+    displayRecipesByTag();
 
-      allIconSpan.forEach((icon) => {
-        icon.addEventListener("click", () => {
-          tag.classList.remove("selectedTags_item--checked");
-          tag.classList.add("selectedTags_item--unchecked");
+    let allIconSpan = document.querySelectorAll(
+      ".nav_selectedTags > li > span"
+    );
 
-          icon.parentNode.remove();
-          displayRecipesByTag();
-        });
+    allIconSpan.forEach((icon) => {
+      icon.addEventListener("click", () => {
+        tag.classList.remove("selectedTags_item--checked");
+        tag.classList.add("selectedTags_item--unchecked");
+
+        icon.parentNode.remove();
+        displayRecipesByTag();
       });
     });
   });
+});
 
-  const containerSeachTags = document.querySelectorAll(".searchTags_filter");
-  containerSeachTags.forEach((container) => {
-    let arrayLiTagsLists = [];
+const containerSeachTags = document.querySelectorAll(".searchTags_filter");
+containerSeachTags.forEach((container) => {
+  let arrayLiTagsLists = [];
+  arrayLiTagsLists.length = 0;
+  let tagsFromTagList = container.lastElementChild.childNodes;
+
+  container.addEventListener("focusin", () => {
+    //reset
+    const allBtnDown = document.querySelectorAll(".searchTags_btnDown");
+    const allBtnUp = document.querySelectorAll(".searchTags_btnUp");
+    const btnDown = container.firstElementChild.nextElementSibling;
+    const btnUp = btnDown.nextElementSibling;
+
+    allBtnDown.forEach((btn) => {
+      btn.style.display = "block";
+    });
+    allBtnUp.forEach((btn) => {
+      btn.style.display = "none";
+    });
+    containerSeachTags.forEach((cont) => {
+      cont.style.width = "fit-content";
+    });
+    ulTagsList.forEach((ul) => {
+      ul.style.display = "none";
+    });
+
+    // Anim on focusin
+    container.style.width = "60%";
+    container.lastElementChild.style.display = "flex";
+    btnDown.style.display = "none";
+    btnUp.style.display = "block";
+  });
+
+  let input = container.firstElementChild;
+  input.addEventListener("focusin", () => {
+    input.value = "";
+    tagsFromTagList = container.lastElementChild.childNodes;
     arrayLiTagsLists.length = 0;
-    let tagsFromTagList = container.lastElementChild.childNodes;
-
-    container.addEventListener("focusin", () => {
-      //reset
-      const allBtnDown = document.querySelectorAll(".searchTags_btnDown");
-      const allBtnUp = document.querySelectorAll(".searchTags_btnUp");
-      const btnDown = container.firstElementChild.nextElementSibling;
-      const btnUp = btnDown.nextElementSibling;
-
-      allBtnDown.forEach((btn) => {
-        btn.style.display = "block";
-      });
-      allBtnUp.forEach((btn) => {
-        btn.style.display = "none";
-      });
-      containerSeachTags.forEach((cont) => {
-        cont.style.width = "fit-content";
-      });
-      ulTagsList.forEach((ul) => {
-        ul.style.display = "none";
-      });
-
-      // Anim on focusin
-      container.style.width = "60%";
-      container.lastElementChild.style.display = "flex";
-      btnDown.style.display = "none";
-      btnUp.style.display = "block";
-    });
-
-    let input = container.firstElementChild;
-    input.addEventListener("focusin", () => {
-      input.value = "";
-      tagsFromTagList = container.lastElementChild.childNodes;
-      arrayLiTagsLists.length = 0;
-      tagsFromTagList.forEach((li) => {
-        arrayLiTagsLists.push(li);
-      });
-    });
-
-    input.addEventListener("focusout", () => {
-      input.value = input.getAttribute("data-value");
-    });
-
-    input.addEventListener("input", (e) => {
-      e.preventDefault();
-      let tagValueNormalized = norm.getNormalizeText(e.target.value).trim();
-      let regexInput = new RegExp(`${tagValueNormalized}\\ ?`, "gi");
-
-      const matchTag = (obj) => {
-        return norm.getNormalizeText(obj.textContent).trim().match(regexInput);
-      };
-      let arrayFiltered = arrayLiTagsLists.filter(matchTag);
-      console.log(arrayFiltered);
-
-      container.lastElementChild.innerHTML = "";
-      if (arrayFiltered.length != 0) {
-        arrayFiltered.forEach((li) => {
-          container.lastElementChild.appendChild(li);
-        });
-      } else {
-        container.lastElementChild.appendChild(mess.messageNoMatch());
-      }
+    tagsFromTagList.forEach((li) => {
+      arrayLiTagsLists.push(li);
     });
   });
-}
 
-test();
+  input.addEventListener("focusout", () => {
+    input.value = input.getAttribute("data-value");
+  });
+
+  input.addEventListener("input", (e) => {
+    e.preventDefault();
+    let tagValueNormalized = norm.getNormalizeText(e.target.value).trim();
+    let regexInput = new RegExp(`${tagValueNormalized}\\ ?`, "gi");
+
+    const matchTag = (obj) => {
+      return norm.getNormalizeText(obj.textContent).trim().match(regexInput);
+    };
+    let arrayFiltered = arrayLiTagsLists.filter(matchTag);
+    console.log(arrayFiltered);
+
+    container.lastElementChild.innerHTML = "";
+    if (arrayFiltered.length != 0) {
+      arrayFiltered.forEach((li) => {
+        container.lastElementChild.appendChild(li);
+      });
+    } else {
+      container.lastElementChild.appendChild(mess.messageNoMatch());
+    }
+  });
+});
