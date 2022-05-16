@@ -91,6 +91,7 @@ class recipe {
           " " +
           this.description
       ),
+      testMatchSearch: [],
     };
 
     for (let i = 0; i < this.ingredients.length; i++) {

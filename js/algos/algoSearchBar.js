@@ -1,20 +1,31 @@
-import * as mess from "../patterns/message.js";
-
 // ------------------------------------------------------------------------------------------- //
-// ----------------------------------------------------- ALGORITM FOR SEARCH BAR IN FUNCTIONAL //
+// --------------------------------------------------------- ALGORITM FOR SEARCH BAR IN NATIVE //
 // ------------------------------------------------------------------------------------------- //
 
-function getArrayRecipesBySearchBar(arrayWordsSearched, arrayToFilter) {
-  //callback function
-  const filterRecipes = (obj) => {
-    const testEachSearchWord = (item) => {
-      let regexInput = new RegExp(`${item}\\ ?`, "gi");
-      return obj.contentTxt.match(regexInput);
-    };
-    return arrayWordsSearched.every(testEachSearchWord);
-  };
-  let arrayFiltered = arrayToFilter.filter(filterRecipes);
+// Verify matches of each word in input with textContent recipes
+function testWordSearched(obj, arrSearch, arrTest) {
+  for (let item of arrSearch) {
+    let regexInput = new RegExp(`${item}\\ ?`, "gi");
+    if (!obj.contentTxt.match(regexInput)) {
+      arrTest.push(1);
+    } else {
+      arrTest.push(0);
+    }
+  }
+}
+
+// Generate array filtered containing all recipes matches with search user
+function getArrayRecipesBySearchBar(wordsSearched, array) {
+  let arrayFiltered = [];
+  for (let obj of array) {
+    let arrayTestSearchMatch = obj.testMatchSearch;
+    arrayTestSearchMatch.length = 0;
+    testWordSearched(obj, wordsSearched, arrayTestSearchMatch);
+    if (arrayTestSearchMatch.includes(1) == false) {
+      arrayFiltered.push(obj);
+    }
+  }
   return arrayFiltered;
 }
 
-export { getArrayRecipesBySearchBar };
+export { getArrayRecipesBySearchBar, testWordSearched };
