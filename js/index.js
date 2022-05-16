@@ -61,7 +61,7 @@ animNav.animUpFilters(upBtns, tagsFilters);
 // ---------------------------------------------------------------------- IMPLEMENTATION DATAS //
 // ------------------------------------------------------------------------------------------- //
 
-data.recipes.forEach((rec) => {
+for (let rec of data.recipes) {
   // ------------------------------------------------------------------ Get data recipes cards //
   let cardRecipe = new card.recipe(
     rec.name,
@@ -87,7 +87,7 @@ data.recipes.forEach((rec) => {
   }
   let applianceClass = new tags.tagsListFilter(rec.appliance);
   applianceClass.createTagsList(objTagsAppliance);
-});
+}
 
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------- DISPLAY CARDS RECIPES & TAGS LIST //
@@ -278,9 +278,9 @@ for (let container of containerSeachTags) {
     input.value = "";
     tagsFromTagList = container.lastElementChild.childNodes;
     arrayLiTagsLists.length = 0;
-    tagsFromTagList.forEach((li) => {
+    for (let li of tagsFromTagList) {
       arrayLiTagsLists.push(li);
-    });
+    }
     tags.styleTagsListsOnFocus(container, containerSeachTags, ulTagsList);
   });
 
