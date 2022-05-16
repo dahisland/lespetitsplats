@@ -100,11 +100,15 @@ fieldset.nav_searchTags {
     border-bottom-left-radius: 0.3rem;
     border-bottom-right-radius: 0.3rem;
     flex-wrap: wrap;
-    justify-content: space-between;
+    gap: 2%;
+    justify-content: flex-start;
     padding: 0.9rem;
     width: 100%;
     @include utils.responsive(desktop) {
-      justify-content: space-between;
+      gap: 1%;
+    }
+    @include utils.responsive(tabs) {
+      gap: inherit;
     }
 
     // Tags list items
@@ -130,7 +134,7 @@ ul.nav_selectedTags {
   margin-bottom: 0.4rem;
 
   // Active selected tag item
-  p {
+  li {
     display: block;
     margin: 0;
     margin-right: 0.4rem;

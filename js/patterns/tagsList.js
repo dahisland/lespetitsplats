@@ -1,10 +1,6 @@
 import * as norm from "../utils/normalizeTxt.js";
 
 // ------------------------------------------------------------------------------------------- //
-// ----------------------------------------------------------------- ARRAYS FOR EACH TAGS LIST //
-// ------------------------------------------------------------------------------------------- //
-
-// ------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------- GET INITIALS TAGS LISTS //
 // ------------------------------------------------------------------------------------------- //
 
@@ -20,10 +16,9 @@ class tagsListFilter {
 
     if (objTagList.tags.includes(normalizeTagTxt) == false) {
       let elementTagList = document.createElement("li");
-      elementTagList.classList.add("selectedTags_item--unchecked");
-      elementTagList.setAttribute("data-status", "unchecked");
-      objTagList.tags.push(normalizeTagTxt);
       elementTagList.innerHTML = upperTagTxt;
+      elementTagList.classList.add("selectedTags_item--unchecked");
+      objTagList.tags.push(normalizeTagTxt);
       objTagList.li.push(elementTagList);
     }
   }
@@ -35,8 +30,9 @@ function displayTagsLists(attr, containerTags, arrayTags) {
   let normalizeRecipeTxt = attr.tags;
   for (let item of arrayTags.li) {
     if (
-      normalizeRecipeTxt.includes(norm.getNormalizeText(item.textContent)) ==
-      true
+      normalizeRecipeTxt.includes(
+        norm.getNormalizeText(item.textContent).trim()
+      ) == true
     ) {
       containerTags.appendChild(item);
     }
@@ -44,44 +40,68 @@ function displayTagsLists(attr, containerTags, arrayTags) {
 }
 
 // ------------------------------------------------------------------------------------------- //
-// --------------------------------------------------------- DISPLAY/HIDE SELECTED ACTIVE TAGS //
+// -------------------------------------------------------------- DISPLAY SELECTED ACTIVE TAGS //
 // ------------------------------------------------------------------------------------------- //
 
-// Function for display tags selected in the tags-selected bar
-function selectTag(tagSelect, element) {
-  tagSelect.innerHTML =
-    element.innerHTML +
-    '<span class="far fa-times-circle icons icons--close"></span>';
-  tagSelect.setAttribute("data-value", element.innerHTML);
-  element.setAttribute("data-status", "checked");
-  element.classList.remove("selectedTags_item--unchecked");
-  element.classList.add("selectedTags_item--checked");
-  if (element.parentNode.getAttribute("data-name") == "Appareils") {
-    tagSelect.style.background = "#68d9a4";
+function displayTagsSelected(tagsListTag, containerUl) {
+  let tagChecked = document.createElement("li");
+
+  tagsListTag.classList.remove("selectedTags_item--unchecked");
+  tagsListTag.classList.add("selectedTags_item--checked");
+  tagChecked.innerHTML =
+    tagsListTag.innerHTML +
+    ` <span class="far fa-times-circle icons icons--close"></span>`;
+
+  if (tagsListTag.parentNode.getAttribute("data-name") == "Appareils") {
+    tagChecked.style.background = "#68d9a4";
   }
-  if (element.parentNode.getAttribute("data-name") == "Ingrédients") {
-    tagSelect.style.background = "#3282f7";
+  if (tagsListTag.parentNode.getAttribute("data-name") == "Ingrédients") {
+    tagChecked.style.background = "#3282f7";
   }
-  if (element.parentNode.getAttribute("data-name") == "Ustensiles") {
-    tagSelect.style.background = "#ed6454";
+  if (tagsListTag.parentNode.getAttribute("data-name") == "Ustensiles") {
+    tagChecked.style.background = "#ed6454";
   }
+
+  containerUl.appendChild(tagChecked);
 }
 
-// function for hide tags unselected in the tags-selected bar
-function unselectTag(element) {
-  let tagsIconClose = document.querySelectorAll(".nav_selectedTags > p > span");
-  tagsIconClose.forEach((iconClose) => {
-    iconClose.addEventListener("click", () => {
-      if (
-        iconClose.parentNode.getAttribute("data-value") == element.innerHTML
-      ) {
-        element.setAttribute("data-status", "unchecked");
-        element.classList.remove("selectedTags_item--checked");
-        element.classList.add("selectedTags_item--unchecked");
-        iconClose.parentNode.style.display = "none";
-      }
-    });
+// ------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------- STYLE TAGLISTS ON FOCUS //
+// ------------------------------------------------------------------------------------------- //
+
+function styleTagsListsOnFocus(
+  containerTagsList,
+  allContainersTagsList,
+  containerUl
+) {
+  const allBtnDown = document.querySelectorAll(".searchTags_btnDown");
+  const allBtnUp = document.querySelectorAll(".searchTags_btnUp");
+  const btnDown = containerTagsList.firstElementChild.nextElementSibling;
+  const btnUp = btnDown.nextElementSibling;
+
+  allBtnDown.forEach((btn) => {
+    btn.style.display = "block";
   });
+  allBtnUp.forEach((btn) => {
+    btn.style.display = "none";
+  });
+  allContainersTagsList.forEach((cont) => {
+    cont.style.width = "fit-content";
+  });
+  containerUl.forEach((ul) => {
+    ul.style.display = "none";
+  });
+
+  // Anim on focusin
+  containerTagsList.style.width = "60%";
+  containerTagsList.lastElementChild.style.display = "flex";
+  btnDown.style.display = "none";
+  btnUp.style.display = "block";
 }
 
-export { tagsListFilter, displayTagsLists, selectTag, unselectTag };
+export {
+  tagsListFilter,
+  displayTagsLists,
+  displayTagsSelected,
+  styleTagsListsOnFocus,
+};

@@ -2,8 +2,10 @@ import * as animNav from "./utils/animNav.js";
 import * as data from "./data/recipes.js";
 import * as card from "./patterns/cards.js";
 import * as tags from "./patterns/tagsList.js";
-import * as algo from "./algos/nativeAlgo.js";
+import * as algoBar from "./algos/algoSearchBar.js";
+import * as algoTag from "./algos/algoByTag.js";
 import * as norm from "./utils/normalizeTxt.js";
+import * as mess from "./patterns/message.js";
 
 // ------------------------------------------------------------------------------------------- //
 // --------------------------------------------------------------------------------- VARIABLES //
@@ -25,6 +27,7 @@ const form = document.querySelector("form");
 // ------------------------------------------------------------------------------------------- //
 
 // ----------------------------------------------------- Containers recipes & recipes filtered //
+
 let arrayRecipes = [];
 let arrayRecipesFiltered = [];
 
@@ -109,56 +112,196 @@ form.addEventListener("submit", (e) => {
 });
 
 // ------------------------------------------------------------------------------------------- //
-// ---------------------------------------------------- CALL NATIVE SEARCH ALGO ON EVENT INPUT //
+// ----------------------------------------------------------------------------- SEARCH EVENTS //
 // ------------------------------------------------------------------------------------------- //
 
-searchInput.addEventListener("input", (e) => {
-  let searchUser = e.target.value;
-  let regexWord = /([0-9a-z]{0,}\ ?)/g;
+const tagsSelectedUl = document.querySelector(".nav_selectedTags");
+let tagsSelectedLi = tagsSelectedUl.childNodes;
+const containerSeachTags = document.querySelectorAll(".searchTags_filter");
 
-  // -------------------------------------- Create array containing each word searched by user //
+let allTags = document.querySelectorAll(".selectedTags_item--unchecked");
+let arrayTagsSelected = [];
+let arrayInputSearchBar = [];
 
-  let wordsSearchedArray = norm
-    .getNormalizeText(searchUser)
-    .trim()
-    .match(regexWord);
-
-  // ------------------------------------ Update cards recipes displays (call algo search bar) //
-
-  algo.searchInRecipes(
-    containerRecipes,
-    wordsSearchedArray,
-    arrayRecipes,
-    arrayRecipesFiltered
-  );
-
-  // --------------------------------------------------------------- Update tags list displays //
-
+// Update tags list displays
+function updateTagsLists(element) {
+  tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
+  tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
+  tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
+}
+// Display recipes filtered
+function displayRecipesFiltered(array) {
+  array.forEach((element) => {
+    containerRecipes.appendChild(element.li);
+    updateTagsLists(element);
+  });
+}
+// Reset containers
+function resetContainers() {
   containerTagsIngredient.innerHTML = "";
   containerTagsAppliance.innerHTML = "";
   containerTagsUstensil.innerHTML = "";
+  containerRecipes.innerHTML = "";
+}
 
-  for (let element of arrayRecipesFiltered) {
-    tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
-    tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
-    tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
+// ------------------------------------------------------------- Events input for search bar //
+searchInput.addEventListener("input", (e) => {
+  // Create array containing each word searched by user
+  let normalizeSearchUser = norm.getNormalizeText(e.target.value).trim();
+  let regexWord = /([0-9a-z]{0,}\ ?)/g;
+  arrayInputSearchBar = normalizeSearchUser.match(regexWord);
+
+  resetContainers();
+
+  let lengthTagSelected = tagsSelectedLi.length;
+  arrayRecipesFiltered = [];
+
+  switch (lengthTagSelected) {
+    case 0:
+      {
+        if (arrayInputSearchBar[0].length > 2) {
+          arrayRecipesFiltered = algoBar.getArrayRecipesBySearchBar(
+            arrayInputSearchBar,
+            arrayRecipes
+          );
+          if (arrayRecipesFiltered.length != 0) {
+            displayRecipesFiltered(arrayRecipesFiltered);
+          } else {
+            containerRecipes.appendChild(mess.messageNoMatch());
+          }
+        }
+        if (arrayInputSearchBar[0].length < 3) {
+          displayRecipesFiltered(arrayRecipes);
+        }
+      }
+      break;
+    default: {
+      if (arrayInputSearchBar[0].length > 2) {
+        arrayRecipesFiltered = algoBar.getArrayRecipesBySearchBar(
+          arrayInputSearchBar,
+          arrayRecipes
+        );
+        arrayRecipesFiltered = algoTag.getArrayRecipesByTags(
+          arrayTagsSelected,
+          arrayRecipesFiltered
+        );
+      } else {
+        arrayRecipesFiltered = algoTag.getArrayRecipesByTags(
+          arrayTagsSelected,
+          arrayRecipes
+        );
+      }
+      if (arrayRecipesFiltered.length != 0) {
+        displayRecipesFiltered(arrayRecipesFiltered);
+      } else {
+        containerRecipes.appendChild(mess.messageNoMatch());
+      }
+    }
   }
 });
 
-// ------------------------------------------------------------------------------------------- //
-// ---------------------------------------------------------- STYLE & EVENTS FOR TAGS SELECTED //
-// ------------------------------------------------------------------------------------------- //
+// ----------------------------------------------------------------- Event on click for tags //
 
-const tagsSelectedContainer = document.querySelector(".nav_selectedTags");
-const allTags = document.querySelectorAll(".selectedTags_item--unchecked");
+function displayRecipesByTag() {
+  arrayTagsSelected.length = 0;
+  resetContainers();
+
+  // Create array containing each word searched by user
+  let normalizeInputSearchBar = norm.getNormalizeText(searchInput.value).trim();
+  let regexWord = /([0-9a-z]{0,}\ ?)/g;
+  arrayInputSearchBar = normalizeInputSearchBar.match(regexWord);
+  // Create array containing each selected tag textContent
+  tagsSelectedLi.forEach((li) => {
+    let tagNormalizedText = norm.getNormalizeText(li.textContent).trim();
+    arrayTagsSelected.push(tagNormalizedText);
+  });
+
+  if (arrayInputSearchBar[0].length < 3) {
+    arrayRecipesFiltered = algoTag.getArrayRecipesByTags(
+      arrayTagsSelected,
+      arrayRecipes
+    );
+  } else {
+    arrayRecipesFiltered = algoBar.getArrayRecipesBySearchBar(
+      arrayInputSearchBar,
+      arrayRecipes
+    );
+    arrayRecipesFiltered = algoTag.getArrayRecipesByTags(
+      arrayTagsSelected,
+      arrayRecipesFiltered
+    );
+  }
+  if (arrayRecipesFiltered.length != 0) {
+    displayRecipesFiltered(arrayRecipesFiltered);
+  } else {
+    containerRecipes.appendChild(mess.messageNoMatch());
+  }
+}
 
 allTags.forEach((tag) => {
-  tag.addEventListener("click", () => {
-    let containerTagSelected = document.createElement("p");
-    if (tag.getAttribute("data-status") == "unchecked") {
-      tags.selectTag(containerTagSelected, tag);
-      tagsSelectedContainer.appendChild(containerTagSelected);
+  tag.addEventListener("click", (e) => {
+    //display tags selected in the tags selected bar
+    if (tag.classList == "selectedTags_item--unchecked") {
+      tags.displayTagsSelected(tag, tagsSelectedUl);
     }
-    tags.unselectTag(tag);
+    // Updating recipes displays
+    displayRecipesByTag();
+
+    let allIconSpan = document.querySelectorAll(
+      ".nav_selectedTags > li > span"
+    );
+    // Add event for buttons close for tags selected in the tags selected bar
+    allIconSpan.forEach((icon) => {
+      icon.addEventListener("click", () => {
+        tag.classList.remove("selectedTags_item--checked");
+        tag.classList.add("selectedTags_item--unchecked");
+        icon.parentNode.remove();
+        // Updating recipes displays
+        displayRecipesByTag();
+      });
+    });
+  });
+});
+
+// ---------------------------------------  Events for update tagslists using input for tags //
+
+containerSeachTags.forEach((container) => {
+  let arrayLiTagsLists = [];
+  arrayLiTagsLists.length = 0;
+  let tagsFromTagList = container.lastElementChild.childNodes;
+  let input = container.firstElementChild;
+
+  // Events on focus
+  input.addEventListener("focusin", () => {
+    input.value = "";
+    tagsFromTagList = container.lastElementChild.childNodes;
+    arrayLiTagsLists.length = 0;
+    tagsFromTagList.forEach((li) => {
+      arrayLiTagsLists.push(li);
+    });
+    tags.styleTagsListsOnFocus(container, containerSeachTags, ulTagsList);
+  });
+
+  input.addEventListener("focusout", () => {
+    input.value = input.getAttribute("data-value");
+  });
+
+  // Events on input
+  input.addEventListener("input", (e) => {
+    e.preventDefault();
+    let tagValueNormalized = norm.getNormalizeText(e.target.value).trim();
+    let regexInput = new RegExp(`${tagValueNormalized}\\ ?`, "gi");
+    let arrayTagsFiltered = [];
+
+    arrayTagsFiltered = algoTag.getArrayTags(arrayLiTagsLists, regexInput);
+
+    container.lastElementChild.innerHTML = "";
+    if (arrayTagsFiltered.length != 0) {
+      arrayTagsFiltered.forEach((li) => {
+        container.lastElementChild.appendChild(li);
+      });
+    } else {
+      container.lastElementChild.appendChild(mess.messageNoMatch());
+    }
   });
 });
