@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------------------------- //
 
 function resetStyleTagsFilters(containerTagsFilters) {
-  containerTagsFilters.forEach((filter) => {
+  for (let filter of containerTagsFilters) {
     filter.style.width = "fit-content";
     // style for input
     filter.children[0].setAttribute("value", filter.getAttribute("data-name"));
@@ -13,7 +13,7 @@ function resetStyleTagsFilters(containerTagsFilters) {
     filter.children[2].style.display = "none";
     // Style for tags list
     filter.children[3].style.display = "none";
-  });
+  }
 }
 
 // ------------------------------------------------------------------------------------------- //
@@ -21,7 +21,7 @@ function resetStyleTagsFilters(containerTagsFilters) {
 // ------------------------------------------------------------------------------------------- //
 
 function animDownFilters(containerDownBtns, containerTagsFilters) {
-  containerDownBtns.forEach((btn) => {
+  for (let btn of containerDownBtns) {
     const btnParent = btn.parentNode;
     const inputFilter = btn.previousElementSibling;
     const upBtn = btn.nextElementSibling;
@@ -35,7 +35,7 @@ function animDownFilters(containerDownBtns, containerTagsFilters) {
       btnParent.style.width = "60%";
       inputFilter.setAttribute("value", "");
     });
-  });
+  }
 }
 
 // ------------------------------------------------------------------------------------------- //
@@ -43,12 +43,12 @@ function animDownFilters(containerDownBtns, containerTagsFilters) {
 // ------------------------------------------------------------------------------------------- //
 
 function animUpFilters(containerUpBtns, containerTagsFilters) {
-  containerUpBtns.forEach((btn) => {
+  for (let btn of containerUpBtns) {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       resetStyleTagsFilters(containerTagsFilters);
     });
-  });
+  }
 }
 
 export { resetStyleTagsFilters, animDownFilters, animUpFilters };

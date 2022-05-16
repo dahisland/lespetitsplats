@@ -79,18 +79,18 @@ function styleTagsListsOnFocus(
   const btnDown = containerTagsList.firstElementChild.nextElementSibling;
   const btnUp = btnDown.nextElementSibling;
 
-  allBtnDown.forEach((btn) => {
+  for (let btn of allBtnDown) {
     btn.style.display = "block";
-  });
-  allBtnUp.forEach((btn) => {
+  }
+  for (let btn of allBtnUp) {
     btn.style.display = "none";
-  });
-  allContainersTagsList.forEach((cont) => {
+  }
+  for (let cont of allContainersTagsList) {
     cont.style.width = "fit-content";
-  });
-  containerUl.forEach((ul) => {
+  }
+  for (let ul of containerUl) {
     ul.style.display = "none";
-  });
+  }
 
   // Anim on focusin
   containerTagsList.style.width = "60%";
