@@ -93,13 +93,17 @@ data.recipes.forEach((rec) => {
 // --------------------------------------------------------- DISPLAY CARDS RECIPES & TAGS LIST //
 // ------------------------------------------------------------------------------------------- //
 
+// Update tags list displays
+function updateTagsLists(element) {
+  tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
+  tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
+  tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
+}
+
 for (let element of arrayRecipes) {
   if (searchInput.value == "") {
     containerRecipes.appendChild(element.li);
-
-    tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
-    tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
-    tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
+    updateTagsLists(element);
   }
 }
 
@@ -123,19 +127,14 @@ let allTags = document.querySelectorAll(".selectedTags_item--unchecked");
 let arrayTagsSelected = [];
 let arrayInputSearchBar = [];
 
-// Update tags list displays
-function updateTagsLists(element) {
-  tags.displayTagsLists(element, containerTagsIngredient, objTagsIngredient);
-  tags.displayTagsLists(element, containerTagsAppliance, objTagsAppliance);
-  tags.displayTagsLists(element, containerTagsUstensil, objTagsUstensil);
-}
 // Display recipes filtered
 function displayRecipesFiltered(array) {
-  array.forEach((element) => {
+  for (let element of array) {
     containerRecipes.appendChild(element.li);
     updateTagsLists(element);
-  });
+  }
 }
+
 // Reset containers
 function resetContainers() {
   containerTagsIngredient.innerHTML = "";
@@ -211,11 +210,12 @@ function displayRecipesByTag() {
   let regexWord = /([0-9a-z]{0,}\ ?)/g;
   arrayInputSearchBar = normalizeInputSearchBar.match(regexWord);
   // Create array containing each selected tag textContent
-  tagsSelectedLi.forEach((li) => {
+  for (let li of tagsSelectedLi) {
     let tagNormalizedText = norm.getNormalizeText(li.textContent).trim();
     arrayTagsSelected.push(tagNormalizedText);
-  });
+  }
 
+  // Generate array containing recipes filtered
   if (arrayInputSearchBar[0].length < 3) {
     arrayRecipesFiltered = algoTag.getArrayRecipesByTags(
       arrayTagsSelected,
@@ -231,6 +231,8 @@ function displayRecipesByTag() {
       arrayRecipesFiltered
     );
   }
+
+  // Display result of search (recipes filtered)
   if (arrayRecipesFiltered.length != 0) {
     displayRecipesFiltered(arrayRecipesFiltered);
   } else {
@@ -238,7 +240,7 @@ function displayRecipesByTag() {
   }
 }
 
-allTags.forEach((tag) => {
+for (let tag of allTags) {
   tag.addEventListener("click", (e) => {
     //display tags selected in the tags selected bar
     if (tag.classList == "selectedTags_item--unchecked") {
@@ -247,11 +249,11 @@ allTags.forEach((tag) => {
     // Updating recipes displays
     displayRecipesByTag();
 
-    let allIconSpan = document.querySelectorAll(
+    // Add event for buttons close for tags selected in the tags selected bar
+    let allIconsSpan = document.querySelectorAll(
       ".nav_selectedTags > li > span"
     );
-    // Add event for buttons close for tags selected in the tags selected bar
-    allIconSpan.forEach((icon) => {
+    for (let icon of allIconsSpan) {
       icon.addEventListener("click", () => {
         tag.classList.remove("selectedTags_item--checked");
         tag.classList.add("selectedTags_item--unchecked");
@@ -259,13 +261,13 @@ allTags.forEach((tag) => {
         // Updating recipes displays
         displayRecipesByTag();
       });
-    });
+    }
   });
-});
+}
 
 // ---------------------------------------  Events for update tagslists using input for tags //
 
-containerSeachTags.forEach((container) => {
+for (let container of containerSeachTags) {
   let arrayLiTagsLists = [];
   arrayLiTagsLists.length = 0;
   let tagsFromTagList = container.lastElementChild.childNodes;
@@ -297,11 +299,11 @@ containerSeachTags.forEach((container) => {
 
     container.lastElementChild.innerHTML = "";
     if (arrayTagsFiltered.length != 0) {
-      arrayTagsFiltered.forEach((li) => {
+      for (let li of arrayTagsFiltered) {
         container.lastElementChild.appendChild(li);
-      });
+      }
     } else {
       container.lastElementChild.appendChild(mess.messageNoMatch());
     }
   });
-});
+}
