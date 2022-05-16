@@ -354,13 +354,19 @@ fieldset.nav_searchTags ul.searchTags_tagsList {
   border-bottom-left-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 2%;
+  justify-content: flex-start;
   padding: 0.9rem;
   width: 100%;
 }
 @media screen and (max-width: 1200px) {
   fieldset.nav_searchTags ul.searchTags_tagsList {
-    justify-content: space-between;
+    gap: 1%;
+  }
+}
+@media screen and (max-width: 768px) {
+  fieldset.nav_searchTags ul.searchTags_tagsList {
+    gap: inherit;
   }
 }
 fieldset.nav_searchTags ul.searchTags_tagsList li {
