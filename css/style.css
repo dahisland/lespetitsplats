@@ -101,6 +101,12 @@ form button {
   font-style: italic;
 }
 
+.main_noTagMatchMessage {
+  color: #fff;
+  opacity: 0.7;
+  font-style: italic;
+}
+
 header {
   margin: 1.5rem 0;
   text-align: center;

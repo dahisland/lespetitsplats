@@ -98,3 +98,9 @@ form {
   color: map-get(utils.$colors, nightgrey);
   font-style: italic;
 }
+
+.main_noTagMatchMessage {
+  color: map-get(utils.$colors, snow);
+  opacity: 0.7;
+  font-style: italic;
+}
