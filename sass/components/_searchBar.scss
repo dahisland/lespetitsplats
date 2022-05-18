@@ -17,5 +17,8 @@ fieldset.nav_searchBar {
     padding-right: 52px;
     background: map-get(utils.$colors, lightgrey);
     @include utils.borders;
+    &::placeholder {
+      font-style: italic;
+    }
   }
 }

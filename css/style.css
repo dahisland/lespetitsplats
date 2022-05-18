@@ -257,6 +257,9 @@ fieldset.nav_searchBar .searchBar_input {
   outline: none;
   border-radius: 0.3rem;
 }
+fieldset.nav_searchBar .searchBar_input::placeholder {
+  font-style: italic;
+}
 
 fieldset.nav_searchTags {
   margin-bottom: 1rem;
@@ -308,6 +311,12 @@ fieldset.nav_searchTags .searchTags_filter input {
   outline: none;
   border-radius: 0.3rem;
   color: #fff;
+}
+fieldset.nav_searchTags .searchTags_filter input::placeholder {
+  color: #e7e7e7;
+  opacity: 0.8;
+  font-style: italic;
+  font-weight: 700;
 }
 fieldset.nav_searchTags .searchTags_filter:nth-child(1) {
   background: #3282f7;
