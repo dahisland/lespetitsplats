@@ -147,7 +147,7 @@ function resetContainers() {
 searchInput.addEventListener("input", (e) => {
   // Create array containing each word searched by user
   let normalizeSearchUser = norm.getNormalizeText(e.target.value).trim();
-  let regexWord = /([0-9a-z]{0,}\ ?)/g;
+  let regexWord = /([0-9a-z]{1,}\ ?)/g;
   arrayInputSearchBar = normalizeSearchUser.match(regexWord);
 
   resetContainers();
@@ -158,7 +158,7 @@ searchInput.addEventListener("input", (e) => {
   switch (lengthTagSelected) {
     case 0:
       {
-        if (arrayInputSearchBar[0].length > 2) {
+        if (arrayInputSearchBar != null && arrayInputSearchBar[0].length > 2) {
           arrayRecipesFiltered = algoBar.getArrayRecipesBySearchBar(
             arrayInputSearchBar,
             arrayRecipes
@@ -168,14 +168,13 @@ searchInput.addEventListener("input", (e) => {
           } else {
             containerRecipes.appendChild(mess.messageNoMatch());
           }
-        }
-        if (arrayInputSearchBar[0].length < 3) {
+        } else {
           displayRecipesFiltered(arrayRecipes);
         }
       }
       break;
     default: {
-      if (arrayInputSearchBar[0].length > 2) {
+      if (arrayInputSearchBar != null && arrayInputSearchBar[0].length > 2) {
         arrayRecipesFiltered = algoBar.getArrayRecipesBySearchBar(
           arrayInputSearchBar,
           arrayRecipes
