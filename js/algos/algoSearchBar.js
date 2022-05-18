@@ -6,10 +6,10 @@
 function testWordSearched(obj, arrSearch, arrTest) {
   for (let item of arrSearch) {
     let regexInput = new RegExp(`${item}\\ ?`, "gi");
-    if (!obj.contentTxt.match(regexInput)) {
-      arrTest.push(1);
+    if (obj.contentTxt.match(regexInput)) {
+      arrTest.push(true);
     } else {
-      arrTest.push(0);
+      arrTest.push(false);
     }
   }
 }
@@ -21,7 +21,8 @@ function getArrayRecipesBySearchBar(wordsSearched, array) {
     let arrayTestSearchMatch = obj.testMatchSearch;
     arrayTestSearchMatch.length = 0;
     testWordSearched(obj, wordsSearched, arrayTestSearchMatch);
-    if (arrayTestSearchMatch.includes(1) == false) {
+    console.log(arrayTestSearchMatch);
+    if (arrayTestSearchMatch.includes(false) == false) {
       arrayFiltered.push(obj);
     }
   }
