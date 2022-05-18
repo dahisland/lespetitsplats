@@ -42,8 +42,8 @@ fieldset.nav_searchTags {
       @include utils.borders;
       color: map-get(utils.$colors, snow);
       &::placeholder {
-        color: map-get(utils.$colors, lightgrey);
-        opacity: 0.8;
+        color: map-get(utils.$colors, snow);
+        opacity: 0.7;
         font-style: italic;
         font-weight: map-get(utils.$weights, boldy);
       }
