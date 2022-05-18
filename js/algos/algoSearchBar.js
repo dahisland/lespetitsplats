@@ -21,7 +21,6 @@ function getArrayRecipesBySearchBar(wordsSearched, array) {
     let arrayTestSearchMatch = obj.testMatchSearch;
     arrayTestSearchMatch.length = 0;
     testWordSearched(obj, wordsSearched, arrayTestSearchMatch);
-    console.log(arrayTestSearchMatch);
     if (arrayTestSearchMatch.includes(false) == false) {
       arrayFiltered.push(obj);
     }
