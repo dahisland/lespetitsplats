@@ -5,8 +5,7 @@
 // Verify matches of each word in input with textContent recipes
 function testWordSearched(obj, arrSearch, arrTest) {
   for (let item of arrSearch) {
-    let regexInput = new RegExp(`${item}\\ ?`, "gi");
-    if (obj.contentTxt.match(regexInput)) {
+    if (obj.contentTxt.match(item)) {
       arrTest.push(true);
     } else {
       arrTest.push(false);
