@@ -150,6 +150,7 @@ searchInput.addEventListener("input", (e) => {
   let regexWord = /([0-9a-z]{1,}\ ?)/g;
   arrayInputSearchBar = normalizeSearchUser.match(regexWord);
 
+  console.log(arrayInputSearchBar);
   resetContainers();
 
   let lengthTagSelected = tagsSelectedLi.length;
